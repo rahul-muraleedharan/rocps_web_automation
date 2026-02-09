@@ -55,8 +55,6 @@ public class RapInRoamingConfiguration extends PSAcceptanceTest {
 	String endNumber;
 	String restartNumber;
 	String tapDecimalPlaces;
-
-	@Test
 	public RapInRoamingConfiguration(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

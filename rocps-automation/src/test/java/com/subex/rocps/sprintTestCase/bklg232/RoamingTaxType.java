@@ -39,7 +39,6 @@ public class RoamingTaxType extends PSAcceptanceTest {
 	 * Constructor for initializing excel Identifying the column size from the map
 	 * passed
 	 */
-	@Test
 	public RoamingTaxType(String path, String workBookName, String sheetName, String testCaseName) throws Exception {
 		this.path = path;
 		this.workBookName = workBookName;

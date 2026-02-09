@@ -36,7 +36,6 @@ public class ImfCurrency extends PSAcceptanceTest {
 	String newCurrency;
 	String imfCurrency;
 	String clientPartition;
-	@Test
 
 	public ImfCurrency(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {

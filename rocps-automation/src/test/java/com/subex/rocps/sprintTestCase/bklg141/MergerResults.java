@@ -31,7 +31,6 @@ public class MergerResults extends PSAcceptanceTest {
 	String dpName="Merger-dec";
 	
 	ArrayList<String> values=new ArrayList<String>();
-	@Test
 	public MergerResults()throws Exception{
 		
 	}

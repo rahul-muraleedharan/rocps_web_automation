@@ -17,7 +17,6 @@ public class PrePaidBalance extends PSAcceptanceTest {
 	
 	OR_Reader orData = new OR_Reader();
 	String path;
-	@Test
 	public PrePaidBalance(String path)throws Exception{
 		this.path = path;
 	}

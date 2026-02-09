@@ -35,7 +35,6 @@ public class ImfExchangeRateImportScreen extends PSAcceptanceTest {
 	String columnHeader;
 	String mapRowKeys;
 	String fileName;
-	@Test
 
 	public ImfExchangeRateImportScreen(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {

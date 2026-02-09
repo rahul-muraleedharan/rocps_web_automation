@@ -47,8 +47,6 @@ package com.subex.rocps.sprintTestCase.bklg285;
 		String callTypeLevel1;
 		String callTypeLevel2;
 		String callTypeLevel3;
-
-		@Test
 		public CallTypeGroup(String path, String workBookName, String sheetName, String testCaseName)
 				throws Exception {
 			this.path = path;

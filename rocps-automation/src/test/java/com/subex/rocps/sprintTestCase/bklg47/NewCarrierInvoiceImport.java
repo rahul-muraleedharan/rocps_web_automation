@@ -36,8 +36,6 @@ public class NewCarrierInvoiceImport extends PSAcceptanceTest {
 	List<String> columnList = null;
 
 	int colSize;
-
-	@Test
 	public NewCarrierInvoiceImport(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

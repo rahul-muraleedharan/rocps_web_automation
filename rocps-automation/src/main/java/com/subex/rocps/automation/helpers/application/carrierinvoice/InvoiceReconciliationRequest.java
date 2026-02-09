@@ -69,7 +69,6 @@ public class InvoiceReconciliationRequest extends PSAcceptanceTest
 	 * Constructor for initializing excel Identifying the column size from the
 	 * map passed
 	 */
-	@Test
 	public InvoiceReconciliationRequest( String path, String workBookName, String sheetName, String testCaseName ) throws Exception
 	{
 		this.path = path;

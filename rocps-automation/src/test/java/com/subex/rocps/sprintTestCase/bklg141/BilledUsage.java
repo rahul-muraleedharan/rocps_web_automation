@@ -40,8 +40,6 @@ public class BilledUsage extends PSAcceptanceTest {
 	double expectedTestBilledUsageInSeconds =120;
 	int decimalPlaces=5;
 	Boolean isValueFound;
-	
-	@Test
 	public BilledUsage ()throws Exception{
 		
 		

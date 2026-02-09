@@ -45,7 +45,6 @@ public class BandsRequiringRerate extends PSAcceptanceTest
 	 * Constructor for initializing excel Identifying the column size from the
 	 * map passed
 	 */
-	@Test
 	public BandsRequiringRerate( String path, String workBookName, String sheetName, String testCaseName ) throws Exception
 	{
 		this.path = path;

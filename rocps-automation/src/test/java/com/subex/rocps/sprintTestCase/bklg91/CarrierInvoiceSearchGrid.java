@@ -38,8 +38,6 @@ package com.subex.rocps.sprintTestCase.bklg91;
 		List<String> columnList = null;
 
 		int colSize;
-
-		@Test
 		public CarrierInvoiceSearchGrid(String path, String workBookName, String sheetName, String testCaseName)
 				throws Exception {
 			this.path = path;

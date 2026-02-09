@@ -44,7 +44,6 @@ public class EventNormalization extends PSAcceptanceTest {
 	 * Constructor for initializing excel Identifying the column size from the map
 	 * passed
 	 */
-	@Test
 	public EventNormalization(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

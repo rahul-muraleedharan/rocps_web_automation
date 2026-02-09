@@ -49,8 +49,6 @@ public class RoamingDef extends PSAcceptanceTest {
 	String fromDate; 
 	String toDate;
 	String secondaryTadig;
- 
-	@Test
 	public RoamingDef(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

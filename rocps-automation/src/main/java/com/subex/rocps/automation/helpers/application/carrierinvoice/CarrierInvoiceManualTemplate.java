@@ -52,7 +52,6 @@ public class CarrierInvoiceManualTemplate extends PSAcceptanceTest
 	 * Constructor for initializing excel Identifying the column size from the
 	 * map passed
 	 */
-	@Test
 	public CarrierInvoiceManualTemplate( String path, String workBookName, String sheetName, String testCaseName ) throws Exception
 	{
 		this.path = path;

@@ -92,7 +92,6 @@ public class AggregationProcessor extends PSAcceptanceTest
 	 * Constructor for initializing excel Identifying the column size from the
 	 * map passed
 	 */
-	@Test
 	public AggregationProcessor( String path, String workBookName, String sheetName, String testCaseName ) throws Exception
 	{
 		this.path = path;

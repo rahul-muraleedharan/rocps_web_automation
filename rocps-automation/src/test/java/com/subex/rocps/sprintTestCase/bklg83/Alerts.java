@@ -37,7 +37,6 @@ public class Alerts extends PSAcceptanceTest{
 	String subject = "test subject";
 	String header="hi";
 	String footer="regards";
-	@Test
 	public Alerts()throws Exception{
 		
 		

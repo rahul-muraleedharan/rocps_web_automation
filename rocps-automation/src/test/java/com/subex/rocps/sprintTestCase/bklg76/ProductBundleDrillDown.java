@@ -28,7 +28,6 @@ public class ProductBundleDrillDown extends PSAcceptanceTest {
 	String path;
 	
 	int i;
-	@Test
 	public ProductBundleDrillDown(String path)throws Exception{
 		this.path = path;
 	}

@@ -40,8 +40,6 @@ public class Settings extends PSAcceptanceTest {
 	int colSize;
 	int paramVal;
 	String Component;
-
-	@Test
 	public Settings(String path, String workBookName, String sheetName, String testCaseName) throws Exception {
 		this.path = path;
 		this.workBookName = workBookName;

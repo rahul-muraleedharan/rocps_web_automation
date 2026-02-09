@@ -62,8 +62,6 @@ public class NRTRDERoamingConfiguration extends PSAcceptanceTest {
 	String tDStartSequence;
 	String endNumber;
 	String increment;
-
-	@Test
 	public NRTRDERoamingConfiguration(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

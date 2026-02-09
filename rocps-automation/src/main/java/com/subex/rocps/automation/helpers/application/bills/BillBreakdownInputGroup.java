@@ -42,7 +42,6 @@ public class BillBreakdownInputGroup extends PSAcceptanceTest {
 	 * Constructor for initializing excel Identifying the column size from the map
 	 * passed
 	 */
-	@Test
 	public BillBreakdownInputGroup(String path, String workBookName, String sheetName, String testCaseName)
 			throws Exception {
 		this.path = path;

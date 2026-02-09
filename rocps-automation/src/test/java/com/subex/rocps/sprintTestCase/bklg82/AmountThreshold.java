@@ -52,8 +52,6 @@ public class AmountThreshold extends PSAcceptanceTest {
 	String team;
 	String currencyData;
 	List<String> columnList = null;
-
-	@Test
 	public AmountThreshold(String path, String workBookName, String sheetName, String testCaseName) throws Exception {
 		this.path = path;
 		this.workBookName = workBookName;

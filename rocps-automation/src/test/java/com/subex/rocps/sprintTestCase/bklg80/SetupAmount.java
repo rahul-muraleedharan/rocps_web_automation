@@ -46,10 +46,6 @@ public class SetupAmount extends PSAcceptanceTest {
 	String rateTRN;
 	Map <String, String> trn_col = null;
 	List<String> Values;
-
-	
-
-	@Test
 	public SetupAmount(String path, String workBookName, String sheetName, String testCaseName) throws Exception {
 		this.path = path;
 		this.workBookName = workBookName;

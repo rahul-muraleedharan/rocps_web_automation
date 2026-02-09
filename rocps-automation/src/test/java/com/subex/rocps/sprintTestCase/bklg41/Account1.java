@@ -40,9 +40,6 @@ public class Account1 extends PSAcceptanceTest {
 	String customerType;
 	int colSize;
 	int paramVal;
-	
-
-	@Test
 	public Account1(String path, String workBookName, String sheetName, String testCaseName) throws Exception {
 		this.path = path;
 		this.workBookName = workBookName;

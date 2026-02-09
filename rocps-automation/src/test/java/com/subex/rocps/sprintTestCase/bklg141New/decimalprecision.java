@@ -19,9 +19,6 @@ public class decimalprecision extends PSAcceptanceTest
 	protected PSGenericHelper genericHelperObj = new PSGenericHelper();
 	
 	int expectedDecimalPlace;
-
-	
-	@Test
 	public decimalprecision() throws Exception
 	{
 
