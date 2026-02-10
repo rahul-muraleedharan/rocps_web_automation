@@ -1,7 +1,7 @@
 package com.subex.automation.helpers.component;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,7 +18,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.google.common.base.Function;
+import java.util.function.Function;
 import com.subex.automation.helpers.componentHelpers.LocatorHelper;
 import com.subex.automation.helpers.selenium.AcceptanceTest;
 import com.subex.automation.helpers.util.FailureHelper;
@@ -553,8 +553,8 @@ public class ElementHelper extends AcceptanceTest {
 	public static void waitForAttribute( String xpath, String attribute, String value, long waitSeconds) throws Exception {
     	try {
     		xpath = GenericHelper.getORProperty(xpath);
-	    	WebDriverWait wait = new WebDriverWait(driver, waitSeconds);
-	    	
+	    	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
+
 	    	if (xpath.startsWith("/"))
 	    		wait.until(ExpectedConditions.attributeToBe(By.xpath(xpath), attribute, value));
 	    	else
@@ -568,8 +568,8 @@ public class ElementHelper extends AcceptanceTest {
 	public static void waitForElement( String xpath, long waitSeconds) throws Exception {
     	try {
     		xpath = GenericHelper.getORProperty(xpath);
-	    	WebDriverWait wait = new WebDriverWait(driver, waitSeconds);
-	    	
+	    	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
+
 	    	if (xpath.startsWith("/"))
 	    		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
 	    	else
@@ -586,8 +586,8 @@ public class ElementHelper extends AcceptanceTest {
 	public static void waitForClickableElement( String xpath, long waitSeconds) throws Exception {
     	try {
     		xpath = GenericHelper.getORProperty(xpath);
-	    	WebDriverWait wait = new WebDriverWait(driver, waitSeconds);
-	    	
+	    	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
+
 	    	if (xpath.startsWith("/"))
 	    		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
 	    	else
@@ -600,7 +600,7 @@ public class ElementHelper extends AcceptanceTest {
 	
 	public static void waitForClickableElement( WebElement element, long waitSeconds) throws Exception {
     	try {
-	    	WebDriverWait wait = new WebDriverWait(driver, waitSeconds);
+	    	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
 			wait.until(ExpectedConditions.elementToBeClickable(element));
     	} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -611,7 +611,7 @@ public class ElementHelper extends AcceptanceTest {
     public static void waitForElementToDisappear(String xpath, long waitSeconds) throws Exception {
     	try {
     		xpath = GenericHelper.getORProperty(xpath);
-			WebDriverWait wait = new WebDriverWait(driver, waitSeconds);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitSeconds));
 			
 			if (xpath.startsWith("/"))
 				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(xpath)));
@@ -969,7 +969,7 @@ public class ElementHelper extends AcceptanceTest {
 	
 	public static boolean isClickable(WebElement element) throws Exception {
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 2);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 			wait.until(ExpectedConditions.visibilityOf(element));
 			wait.until(ExpectedConditions.elementToBeClickable(element));
 			return true;
@@ -1141,11 +1141,10 @@ public class ElementHelper extends AcceptanceTest {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public WebElement fluentWait(final By locator) {
 	    Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-	            .withTimeout(30, TimeUnit.SECONDS)
-	            .pollingEvery(5, TimeUnit.SECONDS)
+	            .withTimeout(Duration.ofSeconds(30))
+	            .pollingEvery(Duration.ofSeconds(5))
 	            .ignoring(NoSuchElementException.class, StaleElementReferenceException.class );
 
 	    WebElement foo = wait.until(new Function<WebDriver, WebElement>() {

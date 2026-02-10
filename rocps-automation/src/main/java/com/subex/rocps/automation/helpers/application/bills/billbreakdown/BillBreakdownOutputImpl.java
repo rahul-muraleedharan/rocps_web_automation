@@ -284,7 +284,7 @@ public class BillBreakdownOutputImpl extends PSAcceptanceTest
 
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		//PSGenericHelper.psFileUploadSikuliWithoutRobot( "//div[@class='roc-trigger roc-fileupload-trigger']", filePathName, fileTypeImageName, openButtonImageName );
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		WebElement fileInput = wait.until(ExpectedConditions.presenceOfElementLocated(
 			    By.cssSelector("input.gwt-FileUpload[type='file']")));
 		String fName = GenericHelper.getPath( automationOS, filePathName );

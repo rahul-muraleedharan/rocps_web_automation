@@ -1,5 +1,9 @@
 package com.subex.automation.helpers.performance.iePreformance;
 
+// Entire class commented out — depends on Selenium RC (com.thoughtworks.selenium)
+// which was removed in Selenium 4.x. This class is unused by the rest of the codebase.
+
+/*
 import java.util.HashMap;
 
 import com.subex.automation.helpers.report.Log4jHelper;
@@ -11,7 +15,6 @@ public class IEPerformanceSeleniumHelper extends IEPerformanceHelper {
 
 	private Selenium defaultSelenium;
 
-	// allow our javascript injection to fail twice. We might not be active when the browser starts before we actually browse to a URL
 	private int failedJSAttempts = 2;
 
 	protected IEPerformanceSeleniumHelper(Selenium defaultSelenium) {
@@ -28,10 +31,6 @@ public class IEPerformanceSeleniumHelper extends IEPerformanceHelper {
 		return helper;
 	}
 
-	/***
-	 * Sets a Marker on the current timestamp
-	 * @param marker
-	 */
 	@Override
 	public void addMark(String marker) throws Exception {
 		try {
@@ -39,10 +38,6 @@ public class IEPerformanceSeleniumHelper extends IEPerformanceHelper {
 				defaultSelenium.runScript("try { _dt_addMark('" + marker + "') } catch(e) { }");
 		}
 		catch (com.thoughtworks.selenium.SeleniumException e) {
-			// The exception "Current window or frame is closed!" can happen.
-			// If this exception occurs, the js-call might have happened too soon (before selenium.open() was called).
-			// In these cases the timer will get set as soon as selenium.open() gets called, as we override this
-			// method and send the timer name with each url.
 			if(--failedJSAttempts == 0)
 				try {
 					{
@@ -67,10 +62,6 @@ public class IEPerformanceSeleniumHelper extends IEPerformanceHelper {
 				defaultSelenium.runScript("try { _dt_setTimerName() } catch(e) { }");
 		}
 		catch (com.thoughtworks.selenium.SeleniumException e) {
-			// The exception "Current window or frame is closed!" can happen.
-			// If this exception occurs, the js-call might have happened too soon (before selenium.open() was called).
-			// In these cases the timer will get set as soon as selenium.open() gets called, as we override this
-			// method and send the timer name with each url.
 			if(--failedJSAttempts == 0) {
 				iePerformAgentActive = false;
 				try {
@@ -88,3 +79,4 @@ public class IEPerformanceSeleniumHelper extends IEPerformanceHelper {
 		defaultSelenium.open(url);
 	}
 }
+*/

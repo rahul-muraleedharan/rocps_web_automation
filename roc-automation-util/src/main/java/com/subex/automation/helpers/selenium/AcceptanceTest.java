@@ -15,8 +15,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
@@ -214,9 +213,8 @@ public class AcceptanceTest extends Assert {
 
 	private void setFirefoxDriver(FirefoxProfile profile) throws Exception {
 		try {
-			DesiredCapabilities capabilities = setCommonCapabilities();
 			FirefoxOptions options = new FirefoxOptions();
-			options.merge(capabilities);
+			options.setAcceptInsecureCerts(true);
 			options.setProfile(profile);
 			options.addPreference("layout.css.devPixelsPerPx", "0.9");
 			driver = new FirefoxDriver(options);
@@ -246,12 +244,10 @@ public class AcceptanceTest extends Assert {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void setChromeDriver(String downloadPath) throws Exception {
 		try {
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 			ChromeOptions options = getChromeOptions();
-			DesiredCapabilities capabilities = new DesiredCapabilities();
 
 //			if(calculatePerformance) {
 //				capabilities = getChromePerformanceCapabilities(chromePrefs, options);
@@ -259,15 +255,13 @@ public class AcceptanceTest extends Assert {
 //			else {
 			chromePrefs.put("profile.default_content_settings.popups", 0);
 			chromePrefs.put("download.default_directory", downloadPath);
-			capabilities = setCommonCapabilities();
 			options.setExperimentalOption("prefs", chromePrefs);
-			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-			capabilities.setJavascriptEnabled(true);
+			options.setAcceptInsecureCerts(true);
 //			}
 
-			driver = new ChromeDriver(capabilities);
+			driver = new ChromeDriver(options);
 
-			
+
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;
@@ -276,50 +270,25 @@ public class AcceptanceTest extends Assert {
 
 
 	
-	@SuppressWarnings("deprecation")
 	private void setIEDriver() throws Exception {
 		try {
-			DesiredCapabilities capabilities = setIECommonCapabilities();
+			InternetExplorerOptions options = new InternetExplorerOptions();
+			options.setCapability("EnableNativeEvents", false);
+			options.setCapability("ignoreZoomSetting", true);
+			options.setAcceptInsecureCerts(true);
 
 //			if(calculatePerformance) {
 //				performanceSummary.put(0, new Object[] {"Screen Name", "Time Taken"});
-//				capabilities.setCapability(InternetExplorerDriver.FORCE_CREATE_PROCESS, true);
-//		        capabilities.setCapability(InternetExplorerDriver.IE_SWITCHES, "-private");
-//				driver = new InternetExplorerDriver(capabilities);
-//				
+//				options.setCapability(InternetExplorerDriver.FORCE_CREATE_PROCESS, true);
+//		        options.setCapability(InternetExplorerDriver.IE_SWITCHES, "-private");
+//				driver = new InternetExplorerDriver(options);
+//
 //				JavascriptExecutor executor = (JavascriptExecutor)driver;
 //				IEPerformance.clearPerformance(executor);
 //			}
 //			else {
-			driver = new InternetExplorerDriver(capabilities);
+			driver = new InternetExplorerDriver(options);
 //			}
-		} catch (Exception e) {
-			FailureHelper.setErrorMessage(e);
-			throw e;
-		}
-	}
-
-	private DesiredCapabilities setCommonCapabilities() throws Exception {
-		try {
-			DesiredCapabilities capabilities = new DesiredCapabilities();
-			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-			capabilities.setJavascriptEnabled(true);
-			return capabilities;
-		} catch (Exception e) {
-			FailureHelper.setErrorMessage(e);
-			throw e;
-		}
-	}
-
-	private DesiredCapabilities setIECommonCapabilities() throws Exception {
-		try {
-			DesiredCapabilities capabilities = new DesiredCapabilities();
-			capabilities.setCapability("EnableNativeEvents", false);
-			capabilities.setCapability("ignoreZoomSetting", true);
-			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-			capabilities.setJavascriptEnabled(true);
-
-			return capabilities;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;

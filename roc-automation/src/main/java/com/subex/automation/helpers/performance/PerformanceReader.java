@@ -4,10 +4,8 @@ import java.net.URL;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -41,17 +39,16 @@ public class PerformanceReader extends ROCAcceptanceTest {
 	private static boolean checkEdit = true;
 	private static boolean isFM = false;
 	
-	private DesiredCapabilities setCommonCapabilities() throws Exception {
+	private FirefoxOptions setCommonCapabilities() throws Exception {
 		try {
 			String downloadPath = GenericHelper.getPath(automationOS, configProp.getDownloadDirectory() + "\\Client_Downloads");
-			DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-			capabilities.setJavascriptEnabled(true);
+			FirefoxOptions options = new FirefoxOptions();
+			options.setAcceptInsecureCerts(true);
 			FirefoxProfile profile = AcceptanceTest.setFirefoxProfile();
 			profile = AcceptanceTest.setFileDownloadProperties(profile, downloadPath);
-			capabilities.setCapability(FirefoxDriver.PROFILE, profile);
-			
-			return capabilities;
+			options.setProfile(profile);
+
+			return options;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;
@@ -65,8 +62,8 @@ public class PerformanceReader extends ROCAcceptanceTest {
 		ExtentReports report = null;
 		
 		try {
-			DesiredCapabilities capabilities = setCommonCapabilities();
-			driver = new RemoteWebDriver(new     URL("http://localhost:4444/wd/hub"), capabilities);
+			FirefoxOptions options = setCommonCapabilities();
+			driver = new RemoteWebDriver(new     URL("http://localhost:4444/wd/hub"), options);
 			
 			driver.get( configProp.getClientURL() );
 			String product = ValidationHelper.checkProduct(configProp.getProduct());

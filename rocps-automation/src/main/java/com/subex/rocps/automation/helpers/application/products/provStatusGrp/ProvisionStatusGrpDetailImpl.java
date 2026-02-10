@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.lang.model.element.Element;
-
-import org.apache.tools.ant.helper.ProjectHelper2.ElementHandler;
-
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
 import com.subex.automation.helpers.component.ElementHelper;

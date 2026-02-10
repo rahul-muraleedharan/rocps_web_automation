@@ -4,10 +4,8 @@ package com.subex.rocps.sprintTestCase.bklg41;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.server.handler.interactions.touch.Scroll;
 import org.testng.annotations.Test;
 
 import com.subex.automation.helpers.application.NavigationHelper;

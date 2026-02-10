@@ -2,11 +2,6 @@ package com.subex.automation.helpers.util;
 
 import java.util.Set;
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-
 import com.subex.automation.helpers.selenium.AcceptanceTest;
 
 public class WindowsHelper extends AcceptanceTest {
@@ -93,27 +88,9 @@ public class WindowsHelper extends AcceptanceTest {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void fullScreen() throws Exception {
 		try {
-			String browser = configProp.getBrowser().toLowerCase();
-			
-			switch (browser) {
-			case "firefox":
-				((FirefoxDriver)driver).getKeyboard().pressKey(Keys.F11);
-				break;
-				
-			case "chrome":
-				((ChromeDriver)driver).getKeyboard().pressKey(Keys.F11);
-				break;
-				
-			case "ie":
-				((InternetExplorerDriver)driver).getKeyboard().pressKey(Keys.F11);
-				break;
-
-			default:
-				break;
-			}
+			driver.manage().window().fullscreen();
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;

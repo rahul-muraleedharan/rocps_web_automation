@@ -1,5 +1,9 @@
 package com.subex.automation.helpers.performance.iePreformance;
 
+// Entire annotation commented out — only used by IEPerformanceSeleniumRunner
+// which depends on Selenium RC (removed in Selenium 4.x).
+
+/*
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,3 +17,4 @@ public @interface SeleniumConfiguration {
 	String seleniumServer() default "localhost";
 	int seleniumPort() default 4444;
 }
+*/

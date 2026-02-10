@@ -3,9 +3,9 @@ package com.subex.automation.helpers.application;
 import java.sql.ResultSet;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
-import org.openqa.selenium.ElementNotVisibleException;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
@@ -227,17 +227,13 @@ public class ROCHelper extends AcceptanceTest {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public Wait<WebDriver> waitFor()
     {
-//		Duration timeout = Duration.ofSeconds(20);
-//		Duration pollTime = Duration.ofSeconds(5);
 		FluentWait<WebDriver> wait = new FluentWait<WebDriver>( driver );
-		wait.withTimeout( 20, TimeUnit.SECONDS );
-		wait.pollingEvery(5, TimeUnit.SECONDS);
+		wait.withTimeout( Duration.ofSeconds(20) );
+		wait.pollingEvery( Duration.ofSeconds(5) );
 		wait.ignoring( NoSuchElementException.class );
-		wait.ignoring( ElementNotVisibleException.class );
-//		wait.ignoring( ElementNotFoundException.class );
+		wait.ignoring( ElementNotInteractableException.class );
 		return wait;
     }
    

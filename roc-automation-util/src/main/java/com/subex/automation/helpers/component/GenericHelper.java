@@ -3,6 +3,7 @@ package com.subex.automation.helpers.component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.time.Duration;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -197,7 +198,7 @@ public class GenericHelper extends AcceptanceTest {
 	public static boolean waitForAJAXReady(long waitInSec) throws Exception
 	{
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, waitInSec);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitInSec));
 
 		    // wait for jQuery to load
 		    ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {

@@ -1,6 +1,9 @@
 package com.subex.automation.helpers.performance.iePreformance;
 
+// Entire class commented out — depends on Selenium RC (com.thoughtworks.selenium)
+// which was removed in Selenium 4.x. This class is unused by the rest of the codebase.
 
+/*
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -47,7 +50,6 @@ public class IEPerformanceSeleniumRunner extends BlockJUnit4ClassRunner {
             @SuppressWarnings("deprecation")
 			@Override
             public void evaluate() throws Throwable {
-            	// We use the Selenium class because we need to make sure to pass the Timer in the "open" and "openWindow" method
             	IEPerformanceSelenium iePerformSelenium = new IEPerformanceSelenium(seleniumClientAnnotation.seleniumServer(), seleniumClientAnnotation.seleniumPort(), getBrowser(seleniumClientAnnotation), seleniumClientAnnotation.location());
                 try {
                 	iePerformSelenium.start();
@@ -69,3 +71,4 @@ public class IEPerformanceSeleniumRunner extends BlockJUnit4ClassRunner {
         };
     }
 }
+*/

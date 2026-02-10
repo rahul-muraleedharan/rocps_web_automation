@@ -9,7 +9,8 @@ import org.sikuli.script.Key;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Screen;
 
-import com.google.common.io.Files;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import com.subex.automation.helpers.application.NavigationHelper;
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
@@ -198,7 +199,7 @@ public class DealImportTemplate extends PSAcceptanceTest
 			}
 			for (int i = 0; i < files.length; i++) {
 				File tempFile = new File(configProp.getDataDirPath()+configProp.getProperty( backupFolder )+files[i].getName()) ;
-				Files.move( files[i], tempFile );
+				Files.move( files[i].toPath(), tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING );
 				Log4jHelper.logInfo( "File "+files[i].getName()+" moved." );
 		}
 	}
@@ -209,7 +210,7 @@ public class DealImportTemplate extends PSAcceptanceTest
 		File templateFile = new File(automationPath+configProp.getProperty( "dealImport" )+"TemplateFile.xlsx");
 		File dataDir = new File(configProp.getDataDirPath()+configProp.getProperty( templateFolder )+"TemplateFile.xlsx");
 		if(!dataDir.exists())
-			Files.copy( templateFile, dataDir );
+			Files.copy( templateFile.toPath(), dataDir.toPath() );
 	}
 }
 
