@@ -16,7 +16,7 @@ public class LocatorHelper extends AcceptanceTest {
 				if (ElementHelper.isElementPresent(wrapperId)) {
 						locator = wrapperId;
 				}
-				else {
+				else if (!wrapperId.startsWith("/")) {
 					if (ElementHelper.isElementPresent(or.getProperty("Wrapper_Locator").replace("wrapperId", wrapperId)))
 						locator = or.getProperty("Wrapper_Locator").replace("wrapperId", wrapperId);
 				}

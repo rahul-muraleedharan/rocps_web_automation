@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -106,7 +107,7 @@ public class ElementHelper extends AcceptanceTest {
 			FailureHelper.setError("Element with identifier '" + idOrXpath + "' is not found.");
 			FailureHelper.setErrorMessage(e);
 			throw e;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -129,7 +130,7 @@ public class ElementHelper extends AcceptanceTest {
 			FailureHelper.setError("Element with identifier '" + idOrXpath + "' is not found.");
 			FailureHelper.setErrorMessage(e);
 			throw e;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -186,7 +187,7 @@ public class ElementHelper extends AcceptanceTest {
 			FailureHelper.setError("Element with identifier '" + idOrXpath + "' is not found.");
 			FailureHelper.setErrorMessage(e);
 			throw e;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -197,12 +198,12 @@ public class ElementHelper extends AcceptanceTest {
 	public static WebElement getWrapperElement(String wrapperId) throws Exception {
 		try {
 			WebElement element = null;
-			
+
 			if (wrapperId != null) {
 				wrapperId = GenericHelper.getORProperty(wrapperId);
 				element = getElement(wrapperId);
-				
-				if (element == null) {
+
+				if (element == null && !wrapperId.startsWith("/")) {
 					String locator = or.getProperty("Wrapper_Locator").replace("wrapperId", wrapperId);
 					element = getElement(locator);
 				}
@@ -227,7 +228,7 @@ public class ElementHelper extends AcceptanceTest {
 			else
 				return null;
 			
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -243,7 +244,7 @@ public class ElementHelper extends AcceptanceTest {
 				return elements.get(0);
 			else
 				return null;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -256,7 +257,7 @@ public class ElementHelper extends AcceptanceTest {
 			
 			return driver.findElement(By.name(name));
 			
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -272,7 +273,7 @@ public class ElementHelper extends AcceptanceTest {
 				return elements.get(0);
 			else
 				return null;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -291,7 +292,7 @@ public class ElementHelper extends AcceptanceTest {
 				return null;
 			else
 				return elements.get(0);
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -307,7 +308,7 @@ public class ElementHelper extends AcceptanceTest {
 				return elements.get(0);
 			else
 				return null;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -320,7 +321,7 @@ public class ElementHelper extends AcceptanceTest {
 			
 			return driver.findElement(By.cssSelector(css));
 			
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -336,7 +337,7 @@ public class ElementHelper extends AcceptanceTest {
 				return elements.get(0);
 			else
 				return null;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -349,7 +350,7 @@ public class ElementHelper extends AcceptanceTest {
 			
 			return driver.findElement(By.xpath("//*[@title='" + title + "']"));
 			
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -365,7 +366,7 @@ public class ElementHelper extends AcceptanceTest {
 				return elements.get(0);
 			else
 				return null;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -396,7 +397,7 @@ public class ElementHelper extends AcceptanceTest {
 			}
 			
 			return element;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -427,7 +428,7 @@ public class ElementHelper extends AcceptanceTest {
 			}
 			
 			return element;
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -440,7 +441,7 @@ public class ElementHelper extends AcceptanceTest {
 			xpath = GenericHelper.getORProperty(xpath);
 			return driver.findElements(By.xpath(xpath));
 			
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -466,7 +467,7 @@ public class ElementHelper extends AcceptanceTest {
 				
 				return elements;
 			}
-		} catch(NoSuchElementException e) {
+		} catch(NoSuchElementException | InvalidSelectorException e) {
 			return null;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
