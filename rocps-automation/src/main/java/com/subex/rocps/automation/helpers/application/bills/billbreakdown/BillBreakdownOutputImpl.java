@@ -172,13 +172,14 @@
 
 package com.subex.rocps.automation.helpers.application.bills.billbreakdown;
 
-import java.time.Duration;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
@@ -283,17 +284,27 @@ public class BillBreakdownOutputImpl extends PSAcceptanceTest
 		TextBoxHelper.type( "billBrkdwnFileUploadDetail.window", "pbboRelativePath", values[1] );
 
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		//PSGenericHelper.psFileUploadSikuliWithoutRobot( "//div[@class='roc-trigger roc-fileupload-trigger']", filePathName, fileTypeImageName, openButtonImageName );
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		WebElement fileInput = wait.until(ExpectedConditions.presenceOfElementLocated(
-			    By.cssSelector("input.gwt-FileUpload[type='file']")));
 		String fName = GenericHelper.getPath( automationOS, filePathName );
-		fileInput.sendKeys(fName);
+		// Click the file upload trigger to open native file dialog
+		ElementHelper.click( "//div[@class='roc-trigger roc-fileupload-trigger']" );
+		Thread.sleep(2000);
+		// Use Robot to type the file path into the native file dialog
+		Robot robot = new Robot();
+		StringSelection selection = new StringSelection( fName );
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents( selection, selection );
+		robot.keyPress( KeyEvent.VK_CONTROL );
+		robot.keyPress( KeyEvent.VK_V );
+		robot.keyRelease( KeyEvent.VK_V );
+		robot.keyRelease( KeyEvent.VK_CONTROL );
+		Thread.sleep(1000);
+		robot.keyPress( KeyEvent.VK_ENTER );
+		robot.keyRelease( KeyEvent.VK_ENTER );
+		Thread.sleep(2000);
 		ButtonHelper.click( fileUploadXpath );
 		if ( ElementHelper.isElementPresent( fileUploadXpath ) )
 			ButtonHelper.click( fileUploadXpath );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		ElementHelper.waitForElementToDisappear( fileUploadXpath, 5 );
+		ElementHelper.waitForElementToDisappear( fileUploadXpath, searchScreenWaitSec );
 	}
 
 	/*
