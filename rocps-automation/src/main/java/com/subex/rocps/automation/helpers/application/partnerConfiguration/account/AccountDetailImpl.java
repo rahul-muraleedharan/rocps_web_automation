@@ -135,15 +135,15 @@ public class AccountDetailImpl extends PSAcceptanceTest
 		mainContactFlag = ExcelHolder.getKey( map, "MainContactFlag" );
 		customerType = ExcelHolder.getKey( map, "CustomerType" );
 		accountName = ExcelHolder.getKey( map, "AccountName" );
-		accountCategory = ExcelHolder.getKey( map, "AccountCategory" );
+	//	accountCategory = ExcelHolder.getKey( map, "AccountCategory" );
 		
-		customerNo = ExcelHolder.getKey( map, "CustomerNo" );
-		billtocxaccNo = ExcelHolder.getKey( map, "BillToCustAccNo" );
-		billtocxsiteNo = ExcelHolder.getKey( map, "BillToCustSiteNo" );
-		dealerCode = ExcelHolder.getKey( map, "DealerCode" );
-		siteCode = ExcelHolder.getKey( map, "SiteCode" );
-		billLob = ExcelHolder.getKey( map, "BillLOB" );
-		
+		/*
+		 * customerNo = ExcelHolder.getKey( map, "CustomerNo" ); billtocxaccNo =
+		 * ExcelHolder.getKey( map, "BillToCustAccNo" ); billtocxsiteNo =
+		 * ExcelHolder.getKey( map, "BillToCustSiteNo" ); dealerCode =
+		 * ExcelHolder.getKey( map, "DealerCode" ); siteCode = ExcelHolder.getKey( map,
+		 * "SiteCode" ); billLob = ExcelHolder.getKey( map, "BillLOB" );
+		 */
 
 	}
 

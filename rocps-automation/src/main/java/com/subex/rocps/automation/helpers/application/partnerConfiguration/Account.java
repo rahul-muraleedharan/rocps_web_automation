@@ -184,7 +184,7 @@ public class Account extends PSAcceptanceTest
 					accDetailTabObj.editAccountDetailsConfig();
 					accDetailTabObj.editAccountCategory();
 					accDetailTabObj.editBankDetails();
-					accDetailTabObj.extraArgument();
+					//accDetailTabObj.extraArgument();
 					ContactInformation();
 					accDetailTabObj.saveAccount( accountName );
 					Log4jHelper.logInfo( "Account is edited successfully with name " + accountName );
