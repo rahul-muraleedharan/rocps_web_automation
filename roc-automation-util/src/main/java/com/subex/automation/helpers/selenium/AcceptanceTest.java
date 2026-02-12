@@ -46,7 +46,6 @@ import com.subex.automation.helpers.util.EmailHelper;
 import com.subex.automation.helpers.util.FailureHelper;
 import com.subex.automation.helpers.util.WindowsHelper;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 /*
  * Base Class for automation tests. Instantiates selenium browser &
@@ -131,8 +130,6 @@ public class AcceptanceTest extends Assert {
 		try {
 //			if (result == null || !result.equals("skip")) {
 			GenericHelper.calculatePerformance();
-			System.setProperty("webdriver.gecko.driver",
-					automationPath + "\\plugins\\" + configProp.getSeleniumDriver());
 
 			FileHelper.makeDirectory(configProp.getDownloadDirectory(), "");
 			FileHelper.makeDirectory(configProp.getDownloadDirectory(), "Client_Downloads");
@@ -150,23 +147,11 @@ public class AcceptanceTest extends Assert {
 				break;
 
 			case "chrome":
-				String chromeFile = GenericHelper.getPath(automationOS,
-						automationPath + "\\plugins\\" + configProp.getChromeDriver());
-				System.setProperty("webdriver.chrome.driver", chromeFile);
 				setChromeDriver(downloadPath);
 				windowsHelper.maximizeBrowser();
 				break;
 
-			/*
-			 * case "chrome": WebDriverManager.chromedriver().setup(); // no need to set
-			 * System property setChromeDrivers(downloadPath); // your method that applies
-			 * options //windowsHelper.maximizeBrowser();
-			 * //driver.manage().window().setSize(new Dimension(907, 732)); break;
-			 */
 			case "ie":
-				String ieFile = GenericHelper.getPath(automationOS,
-						automationPath + "\\plugins\\" + configProp.getIEDriver());
-				System.setProperty("webdriver.ie.driver", ieFile);
 				setIEDriver();
 				break;
 			default:

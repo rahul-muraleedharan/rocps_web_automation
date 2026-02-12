@@ -82,19 +82,6 @@ public class PropertyReader extends ConfigReader {
 		}
 	}
 	
-	public String getSeleniumDriver() throws Exception {
-		return getStringProperty("seleniumDriver", "geckodriver.exe");
-	}
-	
-	public String getChromeDriver() throws Exception {
-		return getStringProperty("chromeDriver", "chromedriver.exe");
-	}
-	
-	public String getIEDriver() throws Exception {
-		return getStringProperty("ieDriver", "msedgedriver.exe");
-	}
-	
-	
 	public String getUtilPath() throws Exception {
 		return getStringProperty("utilPath");
 	}

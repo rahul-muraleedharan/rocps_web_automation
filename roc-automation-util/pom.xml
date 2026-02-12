@@ -193,13 +193,6 @@
 		    <scope>compile</scope>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
-		<dependency>
-    		<groupId>io.github.bonigarcia</groupId>
-    		<artifactId>webdrivermanager</artifactId>
-    		<version>6.3.2</version>
-		</dependency>
-		
 
 
 		<!-- jsoup HTML parser library required to parse the HTML of page and used is Assers (as it is faster) -->
