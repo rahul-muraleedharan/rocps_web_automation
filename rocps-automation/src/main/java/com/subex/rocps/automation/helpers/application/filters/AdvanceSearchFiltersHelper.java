@@ -39,6 +39,8 @@ public class AdvanceSearchFiltersHelper extends PSAcceptanceTest
 		GenericHelper.waitForLoadmask(detailScreenWaitSec);
 		Thread.sleep( 3000 );
 		gridFilterSrchObj.billProfileFilterTxtSearch( "PS_popUpWindowId", billProfileName );
+		GenericHelper.waitForLoadmask(detailScreenWaitSec);
+        ButtonHelper.clickIfEnabled( "OK_Button_ByID" );
 
 	}
 
