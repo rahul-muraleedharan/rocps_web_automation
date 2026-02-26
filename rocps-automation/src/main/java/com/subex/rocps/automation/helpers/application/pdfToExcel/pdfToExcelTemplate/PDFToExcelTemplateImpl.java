@@ -1,12 +1,9 @@
 package com.subex.rocps.automation.helpers.application.pdfToExcel.pdfToExcelTemplate;
 
-import org.sikuli.script.Key;
-import org.sikuli.script.Pattern;
-import org.sikuli.script.Screen;
-
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
 import com.subex.automation.helpers.component.ElementHelper;
+import com.subex.automation.helpers.component.FileHelper;
 import com.subex.automation.helpers.component.GenericHelper;
 import com.subex.automation.helpers.component.GridHelper;
 import com.subex.automation.helpers.component.MouseHelper;
@@ -28,7 +25,7 @@ public class PDFToExcelTemplateImpl extends PSAcceptanceTest
 		TextBoxHelper.type( "PS_Detail_pdfExlTemp_skipPages", skipPagesLast );
 		GenericHelper.selectDataDir( "PS_Detail_pdfExlTemp_outputPath", excelPath, configProp.getThirdLevelDelimiter() );
 		ButtonHelper.click( "PS_Detail_pdfExlTemp_pdfFilename" );
-		psFileUploadSikuli( "PS_Detail_pdfExlTemp_uploadTrigger", automationPath + configProp.getProperty( pdfPath ) + pdfFilename );
+		FileHelper.fileUploadRobot( "PS_Detail_pdfExlTemp_uploadTrigger", automationPath + configProp.getProperty( pdfPath ) + pdfFilename );
 		ButtonHelper.click( "PS_Detail_pdfExlTemp_uploadButton" );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ComboBoxHelper.select( "ppxtExtension_gwt_uid_", excelExtension );
@@ -70,38 +67,5 @@ public class PDFToExcelTemplateImpl extends PSAcceptanceTest
 
 		}
 	}
-	
-	/*
-	 * This method is to facilitate Windows File Upload
-	 */
-
-	private static void psFileUploadSikuli( String fileFieldXpath, String fileNamewithPath ) throws Exception
-	{
-		try
-		{
-			fileFieldXpath = GenericHelper.getORProperty( fileFieldXpath );
-			fileNamewithPath = GenericHelper.getPath( automationOS, fileNamewithPath );
-
-			// Moving focus to browser
-			ElementHelper.setFocus( fileFieldXpath );
-			MouseHelper.click( fileFieldXpath );
-			String fileImgPath = automationPath + "\\Images\\FileUpload\\" + "fileTypeFU1.png";
-			String openButtonImgPath = automationPath + "\\Images\\FileUpload\\" + "openButtonFU1.png";
-
-			Screen screen = new Screen();
-			Pattern filePath = new Pattern( fileImgPath );
-			Pattern openButton = new Pattern( openButtonImgPath );
-
-			screen.type( filePath, fileNamewithPath + Key.TAB );
-			screen.delayClick( 2000 );
-			screen.click( openButton );
-		}
-		catch ( Exception e )
-		{
-			FailureHelper.setErrorMessage( e );
-			throw e;
-		}
-	}
-	
 	
 }

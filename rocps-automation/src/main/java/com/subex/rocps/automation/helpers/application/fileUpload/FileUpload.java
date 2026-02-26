@@ -5,14 +5,11 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.sikuli.script.Key;
-import org.sikuli.script.Pattern;
-import org.sikuli.script.Screen;
-
 import com.subex.automation.helpers.application.NavigationHelper;
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
 import com.subex.automation.helpers.component.ElementHelper;
+import com.subex.automation.helpers.component.FileHelper;
 import com.subex.automation.helpers.component.GenericHelper;
 import com.subex.automation.helpers.component.GridHelper;
 import com.subex.automation.helpers.component.MouseHelper;
@@ -120,7 +117,7 @@ public class FileUpload extends PSAcceptanceTest
 		ComboBoxHelper.select( "PS_Detail_fileUpload_categoryCombo", category );
 		ComboBoxHelper.select( "PS_Detail_fileUpload_fileCollection", fileCollection );
 		ButtonHelper.click( "PS_Detail_fileUpload_file" );
-		PSGenericHelper.psFileUploadSikuli( "PS_Detail_fileUpload_uploadTrigger", filePathName,"fileTypeFU1.png","openButtonFU1.png" );
+		FileHelper.fileUploadRobot( "PS_Detail_fileUpload_uploadTrigger", filePathName );
 		ElementHelper.waitForClickableElement( "PS_Detail_fileUpload_uploadButton", 5 );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ButtonHelper.click( "PS_Detail_fileUpload_uploadButton" );

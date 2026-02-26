@@ -127,8 +127,6 @@ public class RateSheetImportRequestDetailImpl extends PSAcceptanceTest
 	private void rsFileupload() throws MalformedURLException, AWTException, Exception
 	{
 		String filePath = automationPath + configProp.getProperty( "ratesheetPath" ) + fileName;
-		String fileTypeImageName = configProp.getProperty( "fileTypeUploadImageName" );
-		String openButtonImageName = configProp.getProperty( "openButtoneUploadImageName" );
 
 		String path;
 		String os = configProp.getOS();
@@ -139,7 +137,7 @@ public class RateSheetImportRequestDetailImpl extends PSAcceptanceTest
 
 		ButtonHelper.click( "fileChooserGroupLoad" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
-		PSGenericHelper.psFileUploadSikuli( "FileUpload_Browse", path, fileTypeImageName, openButtonImageName );
+		FileHelper.fileUploadRobot( "FileUpload_Browse", path );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
 		ButtonHelper.click( "FileUpload-upload" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );

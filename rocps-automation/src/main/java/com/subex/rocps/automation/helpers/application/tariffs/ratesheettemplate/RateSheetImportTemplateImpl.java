@@ -1,11 +1,6 @@
 package com.subex.rocps.automation.helpers.application.tariffs.ratesheettemplate;
 
 import org.testng.Assert;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Key;
-import org.sikuli.script.Pattern;
-import org.sikuli.script.Screen;
-
 
 import java.util.Map;
 
@@ -121,11 +116,7 @@ public class RateSheetImportTemplateImpl extends PSAcceptanceTest
 		ButtonHelper.click( "PS_RSDetailTemplateRateFileBtnId" );
 		GenericHelper.waitForLoadmask();
 		String rateSheetFilePath = automationPath + configProp.getProperty( "ratesheetPath" ) + rateFilePath;
-		//GenericHelper.fileUpload( rateSheetFilePath );
-		//FileHelper.fileUploadRobot( or.getProperty( "PS_RSDetailfileUploadBtnXpath" ), rateSheetFilePath );
-		String fileTypeImageName = configProp.getProperty( "fileTypeUploadImageName" );
-		String openButtonImageName = configProp.getProperty( "openButtoneUploadImageName" );
-		PSGenericHelper.psFileUploadSikuli("FileUpload_Browse", rateSheetFilePath,fileTypeImageName,openButtonImageName);
+		FileHelper.fileUploadRobot( "FileUpload_Browse", rateSheetFilePath );
 		GenericHelper.waitForLoadmask();
 		ButtonHelper.click( "FileUpload-upload" );
 		GenericHelper.waitForLoadmask();

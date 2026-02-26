@@ -1,7 +1,5 @@
 package com.subex.rocps.automation.helpers.application.carrierinvoice.carrierinvoicetemplate;
 
-import java.awt.AWTException;
-import java.net.MalformedURLException;
 import java.util.Map;
 
 import com.subex.rocps.automation.helpers.application.genericHelpers.PSGenericHelper;
@@ -97,7 +95,7 @@ public class CarrierInvoiceTemplateDetaiImpl extends PSAcceptanceTest
 		
 		ButtonHelper.click( "trigger-scucFilePath" );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		PSGenericHelper.psFileUploadSikuli("FileUpload_Browse", filePath);
+		FileHelper.fileUploadRobot("FileUpload_Browse", filePath);
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
 		ButtonHelper.click( "FileUpload-upload" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );

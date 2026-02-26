@@ -55,28 +55,25 @@ public class FileHelper extends AcceptanceTest{
 			fileFieldXpath = GenericHelper.getORProperty(fileFieldXpath);
 			fileNamewithPath = GenericHelper.getPath(automationOS, fileNamewithPath);
 			MouseHelper.click(fileFieldXpath);
-//			Thread.sleep(1000);
-			
+			Thread.sleep(2000); // Wait for native file dialog to open
+
 			//StringSelection is a class that can be used for copy and paste operations.
 			StringSelection stringSelection = new StringSelection(fileNamewithPath);
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-		  
-			Robot robot = new Robot();	   
+
+			Robot robot = new Robot();
 			try {
-	            //native key strokes for CTRL, V and ENTER keys
-				robot.keyPress(KeyEvent.VK_CONTROL);
-	            robot.keyPress(KeyEvent.VK_A);
-	            robot.keyPress(KeyEvent.VK_BACK_SPACE);
-	            
+	            // Ctrl+V to paste file path from clipboard
 	            robot.keyPress(KeyEvent.VK_CONTROL);
 	            robot.keyPress(KeyEvent.VK_V);
 	            robot.keyRelease(KeyEvent.VK_V);
 	            robot.keyRelease(KeyEvent.VK_CONTROL);
-	            robot.delay(200);
-	            
+	            Thread.sleep(1000);
+
+	            // Press Enter to confirm file selection
 	            robot.keyPress(KeyEvent.VK_ENTER);
 	            robot.keyRelease(KeyEvent.VK_ENTER);
-	            robot.delay(300);
+	            Thread.sleep(2000);
 			}
 			catch (Exception exp) {
 				FailureHelper.setErrorMessage(exp);

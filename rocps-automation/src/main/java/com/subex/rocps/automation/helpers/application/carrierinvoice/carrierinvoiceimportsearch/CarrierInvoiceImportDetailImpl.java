@@ -1,9 +1,5 @@
 package com.subex.rocps.automation.helpers.application.carrierinvoice.carrierinvoiceimportsearch;
 
-import org.sikuli.script.Key;
-import org.sikuli.script.Pattern;
-import org.sikuli.script.Screen;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +69,7 @@ public class CarrierInvoiceImportDetailImpl extends PSAcceptanceTest
 		ButtonHelper.click( "trigger-scucFilePath" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
 		
-		PSGenericHelper.psFileUploadSikuli("FileUpload_Browse", filePath);
+		FileHelper.fileUploadRobot("FileUpload_Browse", filePath);
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
 		ButtonHelper.click( "FileUpload-upload" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );

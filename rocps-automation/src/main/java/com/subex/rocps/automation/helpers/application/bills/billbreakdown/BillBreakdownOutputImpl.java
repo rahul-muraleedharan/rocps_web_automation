@@ -172,19 +172,13 @@
 
 package com.subex.rocps.automation.helpers.application.bills.billbreakdown;
 
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
 import java.util.Map;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
 import com.subex.automation.helpers.component.ElementHelper;
 import com.subex.automation.helpers.component.EntityComboHelper;
+import com.subex.automation.helpers.component.FileHelper;
 import com.subex.automation.helpers.component.GenericHelper;
 import com.subex.automation.helpers.component.PopupHelper;
 import com.subex.automation.helpers.component.PropertyGridHelper;
@@ -284,22 +278,7 @@ public class BillBreakdownOutputImpl extends PSAcceptanceTest
 		TextBoxHelper.type( "billBrkdwnFileUploadDetail.window", "pbboRelativePath", values[1] );
 
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		String fName = GenericHelper.getPath( automationOS, filePathName );
-		// Click the file upload trigger to open native file dialog
-		ElementHelper.click( "//div[@class='roc-trigger roc-fileupload-trigger']" );
-		Thread.sleep(2000);
-		// Use Robot to type the file path into the native file dialog
-		Robot robot = new Robot();
-		StringSelection selection = new StringSelection( fName );
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents( selection, selection );
-		robot.keyPress( KeyEvent.VK_CONTROL );
-		robot.keyPress( KeyEvent.VK_V );
-		robot.keyRelease( KeyEvent.VK_V );
-		robot.keyRelease( KeyEvent.VK_CONTROL );
-		Thread.sleep(1000);
-		robot.keyPress( KeyEvent.VK_ENTER );
-		robot.keyRelease( KeyEvent.VK_ENTER );
-		Thread.sleep(2000);
+		FileHelper.fileUploadRobot( "//div[@class='roc-trigger roc-fileupload-trigger']", filePathName );
 		ButtonHelper.click( fileUploadXpath );
 		if ( ElementHelper.isElementPresent( fileUploadXpath ) )
 			ButtonHelper.click( fileUploadXpath );

@@ -7,6 +7,7 @@ import com.subex.rocps.automation.helpers.selenium.PSAcceptanceTest;
 import com.subex.rocps.automation.utils.ExcelHolder;
 
 import com.subex.automation.helpers.component.ButtonHelper;
+import com.subex.automation.helpers.component.FileHelper;
 import com.subex.automation.helpers.component.GenericHelper;
 
 public class BirtReportType extends PSAcceptanceTest implements ReportAndExtTypeStrategy
@@ -50,7 +51,7 @@ public class BirtReportType extends PSAcceptanceTest implements ReportAndExtType
 		
 		ButtonHelper.click( "load" );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		PSGenericHelper.psFileUploadSikuli("FileUpload_Browse", filePath);
+		FileHelper.fileUploadRobot("FileUpload_Browse", filePath);
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
 		ButtonHelper.click( "FileUpload-upload" );
 		GenericHelper.waitForLoadmask( detailScreenWaitSec );
