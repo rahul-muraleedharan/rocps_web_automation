@@ -155,6 +155,9 @@ public class EventUsgRequestScheduler extends PSAcceptanceTest
 				if ( !isEventUsgReqSchPresent )
 				{
 					eventUsgReqSchedulerActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					EventUsgReqSchedulerDetailImpl eveUsgReqSchedulerDetailImpl = new EventUsgReqSchedulerDetailImpl( eventUsgReqSchedulerMap );
 					eveUsgReqSchedulerDetailImpl.configEventUsgScheduler();
 					Log4jHelper.logInfo( "Event Usage Request Scheduler is created successfully with : " + name );

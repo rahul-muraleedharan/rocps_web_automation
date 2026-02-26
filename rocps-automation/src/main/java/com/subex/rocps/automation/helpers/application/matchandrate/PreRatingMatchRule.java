@@ -102,6 +102,9 @@ public class PreRatingMatchRule extends PSAcceptanceTest
 				{
 					PreRatingMatchRuleDetailImpl pmrDetailObj = new PreRatingMatchRuleDetailImpl( mapObj );
 					genHelperObj.clickNewAction( partition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(partition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					pmrDetailObj.preRatingMatchRuleBasicDetails();
 					pmrDetailObj.addingMatchCriteriaValues();
 					pmrDetailObj.tariffTimeLineConfig();

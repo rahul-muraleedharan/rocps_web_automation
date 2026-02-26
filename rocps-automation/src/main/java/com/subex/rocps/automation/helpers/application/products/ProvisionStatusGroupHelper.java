@@ -144,6 +144,9 @@ public class ProvisionStatusGroupHelper extends PSAcceptanceTest
 				if ( !isProvStatusGrpNmPresent )
 				{
 					proStatusGrpActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProvisionStatusGrpDetailImpl prStatusGrpDetailImpl = new ProvisionStatusGrpDetailImpl( provisionStatusGrpMap );
 					prStatusGrpDetailImpl.configProvStatusGrp();
 					Log4jHelper.logInfo( "'Provision Status Group' is successfully created with ' Name '" + provStatusGrpName );

@@ -131,6 +131,8 @@ public class DealTrafficTypeOrder extends PSAcceptanceTest
 	protected void createNew() throws Exception {
 		genericHelperObj.clickNewAction(clientPartition);
 		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 
 	}
 	/*

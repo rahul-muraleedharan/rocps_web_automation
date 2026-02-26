@@ -142,6 +142,9 @@ public class Currency extends PSAcceptanceTest
 				if ( !iscurrencyPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_currency_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureCurrency();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Currency' is successfully created with  Name:- '" + name );

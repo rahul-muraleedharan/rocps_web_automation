@@ -95,6 +95,9 @@ public class EventAndAggregation extends PSAcceptanceTest
 				{
 				EventAndAggregationActionImpl evtAggActionImpl = new EventAndAggregationActionImpl();
 				evtAggActionImpl.clickNewAction( clientPartition );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition( clientPartition );
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				EventAndAggConfigDetails evtAggConfig = new EventAndAggConfigDetails( evtAggMap, path,workBookName, sheetName );
 				evtAggConfig.configureEventAndAggregation();
 				saveEvtAggConfiguration();

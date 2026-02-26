@@ -93,6 +93,9 @@ public class EventModellingInstance extends PSAcceptanceTest
 			if ( !isEventModInstPresent )
 			{
 				eventModInstAction.clickNewAction( partition, "Event Modelling Instance" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(partition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				eventModInstDetail.openEventModelInstDetail();
 				eventModInstDetail.chckCrtInstBtnEnableOrNot();
 				Log4jHelper.logInfo( "Create Instance Button successfully validated" );
@@ -122,6 +125,9 @@ public class EventModellingInstance extends PSAcceptanceTest
 			if ( !isEventModInstPresent )
 			{
 				eventModInstAction.clickNewAction( partition, "Event Modelling Instance" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(partition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				eventModInstDetail.openEventModelInstDetail();
 				eventModInstDetail.configureTableInstanceDetail();
 				eventModInstDetail.saveEventModelInstance( eventModellingInstance );

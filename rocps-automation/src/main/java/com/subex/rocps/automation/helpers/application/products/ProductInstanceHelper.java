@@ -169,6 +169,9 @@ public class ProductInstanceHelper extends PSAcceptanceTest
 				if ( !isProductInstancePresent )
 				{
 					productInstActImpOb.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProductInstanceDetail productInstanceDetailOb=new ProductInstanceDetail( productInstanceMap );
 					productInstanceDetailOb.createProductInstWithMandatory();
 					ButtonHelper.click( "ClearButton" );
@@ -210,6 +213,9 @@ public class ProductInstanceHelper extends PSAcceptanceTest
 				if ( !isProductInstancePresent )
 				{
 					productInstActImpOb.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProductInstanceDetail productInstanceDetailOb=new ProductInstanceDetail( productInstanceMap );
 					productInstanceDetailOb.createProductInstWithoutMandatory();
 					Log4jHelper.logInfo( "'Product Instance' is successfully created with name " + productInstanceNm );

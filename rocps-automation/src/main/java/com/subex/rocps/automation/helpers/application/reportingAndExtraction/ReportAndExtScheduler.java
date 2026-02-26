@@ -175,6 +175,9 @@ public class ReportAndExtScheduler extends PSAcceptanceTest
 				{
 					RepAndExtScheduleAction repAndExtScheduleAction = new RepAndExtScheduleAction();
 					repAndExtScheduleAction.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RepAndExtSchedulerDetails repAndExtSchedulerDetails = new RepAndExtSchedulerDetails( reportAndExtSchedMap );
 					repAndExtSchedulerDetails.createRepAndExtSchedule();
 					Log4jHelper.logInfo( "'Report and Extract Scheduler' is successfully created with name '" + repAndSchedulerNm );
@@ -246,6 +249,9 @@ public class ReportAndExtScheduler extends PSAcceptanceTest
 					String testcase = ExcelHolder.getKey( reportAndExtSchedMap, "TaskEvaluation" );
 					RepAndExtScheduleAction repAndExtScheduleAction = new RepAndExtScheduleAction();
 					repAndExtScheduleAction.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RepAndExtSchedulerDetails repAndExtSchedulerDetails = new RepAndExtSchedulerDetails( reportAndExtSchedMap );
 					repAndExtSchedulerDetails.createRepAndExtSchedule();
 					GenericHelper.waitTime( 15, "waiting to task update" );

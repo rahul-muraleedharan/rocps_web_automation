@@ -260,6 +260,8 @@ public class DialStringSet extends PSAcceptanceTest {
 	public void clickNewAction() throws Exception {
 		genHelperObj.clickNewAction(clientPartition);
 		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 	}
 
 	/*

@@ -95,6 +95,9 @@ public class AmountThreshold extends PSAcceptanceTest
 				if ( !isAmtThresholdPresnet )
 				{
 					genericHelperObj.clickNewAction( clientPartition );	
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					
 					amtThresholdDetailObj.configureThresholdLegends();
 					
@@ -132,6 +135,9 @@ public class AmountThreshold extends PSAcceptanceTest
 				if ( !isAmtThresholdPresnet )
 				{
 					genericHelperObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					amtThresholdDetailObj.configureThresholdLegends();													
 					amtThresholdDetailObj.saveAmtThreshold();
 					assertTrue( GridHelper.isValuePresent( "SearchGrid", name, "Name" ) );
@@ -163,6 +169,9 @@ public class AmountThreshold extends PSAcceptanceTest
 				if ( !isAmtThresholdPresnet )
 				{
 					genericHelperObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					amtThresholdDetailObj.configureThresholdLegends();
 					//LinkedHashSet<String> getsrcGridData= amtThresholdDetailObj.getGridData();
 					//amtThresholdDetailObj.validateGridRowData( getsrcGridData, "thresholdCurrencyGrid", 1 );

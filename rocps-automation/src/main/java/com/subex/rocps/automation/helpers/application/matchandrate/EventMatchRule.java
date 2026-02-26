@@ -128,6 +128,9 @@ public class EventMatchRule extends PSAcceptanceTest
 				if ( !isEventMatchRuleExists )
 				{
 					genHelperObj.clickNewAction( partition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(partition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					matchRuleDetailConfig();
 					String matchRuleColumnHeaderName = "Name";
 					assertTrue( GridHelper.isValuePresent( "SearchGrid", matchRuleName, matchRuleColumnHeaderName ), "Event match rule : " + matchRuleName + "is not saved" + testCaseName );

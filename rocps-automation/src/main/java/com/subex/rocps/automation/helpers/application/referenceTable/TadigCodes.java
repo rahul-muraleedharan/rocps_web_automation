@@ -131,6 +131,9 @@ public class TadigCodes extends PSAcceptanceTest
 	{
 		ProductUtil.waitForParentActionElementTOBeclickable( "Common Tasks" );
 		psGenericHelper.clickNewAction( clientPartition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ElementHelper.waitForElement( "PS_Detail_tadigCodes_detail_xpath", searchScreenWaitSec );
 	}

@@ -105,6 +105,9 @@ public class EventExtraRatingField extends PSAcceptanceTest
 				if ( !isEventExtraRatingPresent )
 				{
 					eventRatingActionObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newEventExtraRatingField();
 					saveEventRating();
 					Log4jHelper.logInfo( "Event Extra Rating Field is created successfully with name " + name );

@@ -69,6 +69,9 @@ public class RateSheetTemplateConfiguration extends PSAcceptanceTest
 				boolean isRateSheetTempExists = genHelperObj.isGridTextValuePresent( "PS_RSDetailTemplateNameTxtId", templateName, rstSrchTemplateColHeader );
 				if(!isRateSheetTempExists) {
 					genHelperObj.clickNewAction( partition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(partition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					rstImpTmpObj = new RateSheetImportTemplateImpl(mapObj);
 					rstImpTmpObj.detailTabBasicDetails();
 					configuratonMap = excelTestDataInitialize(this.path, this.workBook, this.sheetName,originConfigTestCase);
@@ -111,6 +114,9 @@ public class RateSheetTemplateConfiguration extends PSAcceptanceTest
 				boolean isRateSheetTempExists = genHelperObj.isGridTextValuePresent( "PS_RSDetailTemplateNameTxtId", templateName, rstSrchTemplateColHeader );
 				if(!isRateSheetTempExists) {
 					genHelperObj.clickNewAction( partition );				
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(partition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					rstImpTmpObj = new RateSheetImportTemplateImpl(mapObj);
 					rstImpTmpObj.detailTabBasicDetails();					
 					configuratonMap = excelTestDataInitialize(this.path, this.workBook, this.sheetName,destinationConfigTestCase);

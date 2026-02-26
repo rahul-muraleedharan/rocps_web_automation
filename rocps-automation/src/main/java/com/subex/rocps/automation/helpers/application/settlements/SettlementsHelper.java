@@ -164,6 +164,9 @@ public class SettlementsHelper extends PSAcceptanceTest
 				{
 
 					settlementsActionOb.clickNewAction( clientPartition, "Settlement" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					SettlementsDetailsImpl settlementsDetailOb = new SettlementsDetailsImpl( settlementsMap );
 					settlementsDetailOb.configSettlment();
 					settlementsDetailOb.saveSettlement();
@@ -245,6 +248,9 @@ public class SettlementsHelper extends PSAcceptanceTest
 				clientPartition = ExcelHolder.getKey( settlementsMap, "Partition" );
 				ButtonHelper.click( "ClearButton" );
 				settlementsActionOb.clickNewAction( clientPartition, "Settlement" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				ButtonHelper.click( "PS_Detail_settlements_save_BtndId" );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );

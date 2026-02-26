@@ -105,6 +105,8 @@ public class RouteGroup extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newRouteGroup();
 					genericHelperObj.detailSave( "PS_Detail_routeGroup_savebtn", name, "Name" );
 					Log4jHelper.logInfo( "Route group is created successfully with name " + name );

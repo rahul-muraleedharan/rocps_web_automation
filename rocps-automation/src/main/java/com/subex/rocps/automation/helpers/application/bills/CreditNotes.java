@@ -150,6 +150,9 @@ public class CreditNotes extends PSAcceptanceTest
 	{
 		int initalrowCount = GridHelper.getRowCount( "searchGrid" );
 		creditActionObj.clickNewAction( clientPartition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		creditDetailObj.basicDetails( billProfile, creditDate, currency, creditReason, remarks, creditDue, applySalesTax, includeNextBill );
 		if ( ValidationHelper.isNotEmpty( billLinked ) && ValidationHelper.isTrue( billLinked ) )
 

@@ -139,6 +139,9 @@ PSDataComponentHelper psDataComponentHelper=new PSDataComponentHelper();
 				if ( !issystemTariffMappingPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_systemTariffMapping_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configuresystemTariffMapping();
 					clickOnSave();
 					Log4jHelper.logInfo( "'System Tariff Mapping' is successfully created with  elementSet:- '" + elementSet );

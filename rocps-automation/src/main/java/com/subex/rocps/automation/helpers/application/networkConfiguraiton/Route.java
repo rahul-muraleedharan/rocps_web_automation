@@ -97,6 +97,8 @@ public class Route extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RouteDetailImpl detailObj = new RouteDetailImpl( routeMap );
 					detailObj.basicDetailsConfig();
 					detailObj.elementAssociation();

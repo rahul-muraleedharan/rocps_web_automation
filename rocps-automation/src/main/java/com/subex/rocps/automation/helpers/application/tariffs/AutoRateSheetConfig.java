@@ -145,6 +145,9 @@ public class AutoRateSheetConfig extends PSAcceptanceTest
 		AutoRateSheetConfigDetailImpl autoRateDetailObj = new AutoRateSheetConfigDetailImpl();
 
 		genericHelperObj.clickNewAction( clientPartition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		autoRateDetailObj.newAutoRateSheetConfig( name, tariff );
 		if ( ValidationHelper.isNotEmpty( configRuleTestCase ) )
 			autoRateDetailObj.emailDetails( this.path, this.workBookName, this.sheetName, configRuleTestCase, emailId, emailSubject, maxsize, attachment, outputdir, autoratesheetMap, rateEffectiveDate, templateName );

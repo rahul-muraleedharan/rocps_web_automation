@@ -163,6 +163,9 @@ public class ProductBundlesHelper extends PSAcceptanceTest
 				if ( !isProductBundlePresent )
 				{
 					productBundlesActionobj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProductBundleDetailImpl productBundleDetailObj = new ProductBundleDetailImpl( productBundleMap );
 					productBundleDetailObj.createProductBundle();
 					productBundleDetailObj.saveBundle( productBundleNm );
@@ -199,6 +202,9 @@ public class ProductBundlesHelper extends PSAcceptanceTest
 				if ( !isProductBundlePresent )
 				{
 					productBundlesActionobj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProductBundleDetailImpl productBundleDetailObj = new ProductBundleDetailImpl( productBundleMap );
 					productBundleDetailObj.createWithValidateMessage();
 					productBundleDetailObj.saveBundle( productBundleNm );
@@ -231,6 +237,9 @@ public class ProductBundlesHelper extends PSAcceptanceTest
 			{
 
 				productBundlesActionobj.clickNewAction( clientPartition );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				ButtonHelper.click( "PS_Detail_bundle_save_BtnId" );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );

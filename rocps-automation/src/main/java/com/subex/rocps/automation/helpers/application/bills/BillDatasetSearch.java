@@ -151,6 +151,9 @@ public class BillDatasetSearch extends PSAcceptanceTest
 				if ( !isBillDatasetPresent )
 				{
 					billDatasetActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					BillDatasetDetailImpl billDatasetDetailImpl = new BillDatasetDetailImpl( billDatasetMap );
 					billDatasetDetailImpl.configBillDataset();
 					psGenericHelper.detailSave( "billDatasetDetail.save", datasetName, "Dataset Name" );

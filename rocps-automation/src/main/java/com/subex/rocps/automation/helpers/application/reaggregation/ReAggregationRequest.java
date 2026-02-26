@@ -122,6 +122,9 @@ public class ReAggregationRequest extends PSAcceptanceTest
 				if ( !isReAggregationPresnet )
 				{
 					reaggActionObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newReAggregationRequest();
 				}
 				else

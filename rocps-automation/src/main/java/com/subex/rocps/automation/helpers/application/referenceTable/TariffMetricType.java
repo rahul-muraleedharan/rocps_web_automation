@@ -92,6 +92,8 @@ public class TariffMetricType extends PSAcceptanceTest {
 
 					genericHelperObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newTariffMetric();
 					saveTariffMetricType();
 

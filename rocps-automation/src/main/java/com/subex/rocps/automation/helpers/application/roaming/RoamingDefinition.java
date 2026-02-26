@@ -157,6 +157,9 @@ public class RoamingDefinition extends PSAcceptanceTest
 					checkConfirmationPopup();
 					RoamingDfnActionImpl roamingDfnActionImpl = new RoamingDfnActionImpl();
 					roamingDfnActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RoamingDfnDetail roamingDfnDetail = new RoamingDfnDetail( roamingDefnMap );
 					roamingDfnDetail.createRoamingDefn();
 					Log4jHelper.logInfo( "'Roaming Definition' is successfully created with tadig value:  '" + tadigCode+"' for type of agreement -: "+typeOfAgreement );

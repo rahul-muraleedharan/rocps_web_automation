@@ -143,6 +143,9 @@ public class ProductArgumentTypeHelper extends PSAcceptanceTest
 				if ( !isProductArgTypePresent )
 				{
 					productArgTypeActionObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProductArgTypeDetailHelper productArgTypeDetailOb = new ProductArgTypeDetailHelper( productArgTypeMap );
 					productArgTypeDetailOb.createProductArgType();
 					productArgTypeDetailOb.saveProductArgType( productArgTypeName );

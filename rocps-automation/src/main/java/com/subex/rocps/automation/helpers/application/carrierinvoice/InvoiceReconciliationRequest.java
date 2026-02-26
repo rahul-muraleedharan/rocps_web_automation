@@ -130,6 +130,9 @@ public class InvoiceReconciliationRequest extends PSAcceptanceTest
 	{
 		InvoiceReconciliationRequestDetailImpl detailObj = new InvoiceReconciliationRequestDetailImpl( ciReconMap );		
 		actionObj.clickNewAction( partition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(partition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		detailObj.reconRequestDetailConfig();
 		detailObj.reconSteps();
 		detailObj.saveInvoiceReconRequest();

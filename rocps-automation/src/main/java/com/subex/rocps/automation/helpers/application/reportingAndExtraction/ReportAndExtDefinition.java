@@ -153,6 +153,9 @@ public class ReportAndExtDefinition extends PSAcceptanceTest
 				{
 					ReportAndExtDefnAction reExtDefnAction = new ReportAndExtDefnAction();
 					reExtDefnAction.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ReportAndExtDefnDetails reportAndExtDefnDetails = new ReportAndExtDefnDetails( reportAndExtDefnMap );
 					reportAndExtDefnDetails.configureReportAndExtDefn();
 					Log4jHelper.logInfo( "'Report and Extract Definition' is successfully created with name '" + repAndExtName );

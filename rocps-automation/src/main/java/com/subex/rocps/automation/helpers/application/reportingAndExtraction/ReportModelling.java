@@ -167,6 +167,9 @@ public class ReportModelling extends PSAcceptanceTest
 				{
 
 					reportModellingActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ReportModellingDetailImpl reportModellingDetailImpl = new ReportModellingDetailImpl( reportModellingMap );
 					reportModellingDetailImpl.configReportModelling();
 					Log4jHelper.logInfo( "'Report Modelling' is successfully created with 'Report Modelling Name '" + repModellingNm + " and prefix " + prefix );

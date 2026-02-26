@@ -111,6 +111,8 @@ public class DisputeHelper extends PSAcceptanceTest
 				{
 					psGenericHelper.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newDisputeType();
 					saveDisputeType();
 
@@ -193,6 +195,9 @@ public class DisputeHelper extends PSAcceptanceTest
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				DisputeActionImpl disputeActionImpl = new DisputeActionImpl();
 				disputeActionImpl.clickNewAction( clientPartition, "Dispute" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				ButtonHelper.click( "PS_Detail_dispute_Save_btnID" );
 				String errorText = driver.findElement( By.id( "errorText" ) ).getText();
@@ -233,6 +238,9 @@ public class DisputeHelper extends PSAcceptanceTest
 					DisputeActionImpl disputeActionImpl = new DisputeActionImpl();
 					DisputeDetailImpl disputeDetailImpl = new DisputeDetailImpl( disputeMap );
 					disputeActionImpl.clickNewAction( clientPartition, "Dispute" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					disputeDetailImpl.createDisputeConfig();
 					disputeDetailImpl.saveDispute( columnVal, disputeType );
 					Log4jHelper.logInfo( "Dispute is successfully created with the value-'" + columnVal + "' for this type of Dispute: " + disputeType );

@@ -142,6 +142,9 @@ public class SalesProposal extends PSAcceptanceTest
 				if ( !issalesProposalPresent )
 				{
 					salesProposalActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					SalesProposalDetail salesProposalDetailImpl = new SalesProposalDetail( salesProposalMap );
 					salesProposalDetailImpl.configureSalesProposal();
 					Log4jHelper.logInfo( "Sales Proposal is successfuly saved with " + salesProposalName );

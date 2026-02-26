@@ -111,6 +111,9 @@ public class EventMatchRuleGroup extends PSAcceptanceTest
 				{
 
 					psGenHelpObj.clickNewAction( partition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(partition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ElementHelper.isElementPresent( or.getProperty( "Detail_screenTitleXpath" ) );
 					GenericHelper.waitForLoadmask( detailScreenWaitSec );
 					TextBoxHelper.type( "PSDetail_emrName_txtId", name );

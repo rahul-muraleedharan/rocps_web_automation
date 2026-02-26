@@ -91,6 +91,8 @@ public class TariffRateName extends PSAcceptanceTest {
 
 					genericHelperObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newtariffRateName();
 					saveTariffRateName();
 					Log4jHelper.logInfo("Tariff Rate Name is created successfully with name " + name);

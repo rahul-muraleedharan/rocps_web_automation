@@ -149,6 +149,9 @@ public class RoamingDiscounting extends PSAcceptanceTest
 				if ( !isRoamingDiscNamePresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_roamDiscount_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureRoamingDiscounting();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Roaming Discounting' is successfully created with  Name:- '" + name );

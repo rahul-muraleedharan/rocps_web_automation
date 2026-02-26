@@ -143,6 +143,9 @@ public class IPMeasuremConfigurationHelper extends PSAcceptanceTest
 				if ( !isIpMeasConfigPresent )
 				{
 					ipConfigActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					IPMeasurConfigDetailImpl ipMeasurConfigDetailImpl = new IPMeasurConfigDetailImpl( ipMeasConfigurationMap );
 					ipMeasurConfigDetailImpl.configureIpMeasurment();
 					Log4jHelper.logInfo( "Ip Measurement Configuration is successfuly saved with " + ipMeasuConfigName );

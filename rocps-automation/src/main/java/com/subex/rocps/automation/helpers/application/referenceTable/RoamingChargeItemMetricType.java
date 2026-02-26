@@ -139,6 +139,9 @@ public class RoamingChargeItemMetricType extends PSAcceptanceTest
 				if ( !isroamChgItemMetTypePresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_roamChgItemMetTypeMap_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureroamChgItemMetType();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Roaming Charge Item Metric Type Map' is successfully created with  'Tariff Metric Type':- '" + tariffMetType );

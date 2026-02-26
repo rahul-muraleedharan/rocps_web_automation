@@ -192,6 +192,9 @@ public class XdrExtrTempHelper extends PSAcceptanceTest
 				XdrExtrTempDetailImpl xdrExtrTempDetailIObj = new XdrExtrTempDetailImpl( xdrExtTempMap );
 				XDRExtractFilter xdrExtractFilterObj = new XDRExtractFilter(xdrExtTempMap);
 				xdrExtrTempActionObj.clickNewAction( clientPartition, "XDR Extraction Template" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				xdrExtrTempDetailIObj.configXdrExtTempl( xdrExtTempNm );
 				xdrExtractFilterObj.xdrExtractFilterTabConfig();
 				xdrExtrTempDetailIObj.saveXdrExtTempl( xdrExtTempNm );

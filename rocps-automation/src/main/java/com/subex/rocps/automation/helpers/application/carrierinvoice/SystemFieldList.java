@@ -108,6 +108,9 @@ public class SystemFieldList extends PSAcceptanceTest {
 						name, "Name");
 				if (!isSystemFieldPresent) {
 					genericHelperObj.clickNewAction(clientPartition);
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					SystemFieldListDetailImpl sysDetailObj = new SystemFieldListDetailImpl(systemFieldMap);
 					sysDetailObj.basicConfig();
 					sysDetailObj.systemFieldMappingGrid();

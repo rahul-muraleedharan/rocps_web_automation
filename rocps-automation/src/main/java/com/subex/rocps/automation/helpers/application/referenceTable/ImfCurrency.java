@@ -139,6 +139,9 @@ public class ImfCurrency extends PSAcceptanceTest
 				if ( !isImfCurrencyPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_imfCurrency_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureImfCurrency();
 					clickOnSave();
 					Log4jHelper.logInfo( "'IMF Currency' is successfully created with  Name:- '" + imfCurrencyName );

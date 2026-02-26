@@ -143,6 +143,9 @@ public class SurchargeRule extends PSAcceptanceTest
 				if ( !isSurchargeRulePresent )
 				{
 					surchargeRuleActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					SurchargeRuleDetailImpl surchargeRuleDetailImpl = new SurchargeRuleDetailImpl( surchargeRuleMap );
 					surchargeRuleDetailImpl.configureSurchargeRule();
 					Log4jHelper.logInfo( "Surcharge Rule is successfuly saved with " + surchargeRuleName );

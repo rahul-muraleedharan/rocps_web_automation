@@ -94,6 +94,8 @@ public class EventLegCodeGroup extends PSAcceptanceTest
 
 					legcodeActionObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newEventLegCodeGroup();
 
 					saveEventLegCodeGroup();

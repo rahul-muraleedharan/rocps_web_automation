@@ -146,6 +146,8 @@ public class AggregationProcessor extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition( clientPartition );
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newaggregationProcessor();
 					ButtonHelper.click( "PS_Detail_AggrProcessor_save_btn" );
 					GenericHelper.waitForSave();

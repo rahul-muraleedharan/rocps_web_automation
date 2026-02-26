@@ -150,6 +150,9 @@ public class BillReportConfigurationHelper extends PSAcceptanceTest
 				if ( !isBillReportConfPresent )
 				{
 					billReportConfigActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					BillReprtConfiguredetail billReprtConfiguredetail = new BillReprtConfiguredetail( billReportConfMap );
 					billReprtConfiguredetail.configBillReportConf();
 					psGenericHelper.detailSave( "PSDetail_Bill_Report_Conf_save_btnId", configureName, "Configuration Name" );

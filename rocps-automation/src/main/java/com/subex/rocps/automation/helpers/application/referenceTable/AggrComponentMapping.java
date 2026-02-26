@@ -94,6 +94,8 @@ public class AggrComponentMapping extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newaggrComponentMapping();
 
 					ButtonHelper.click( "OK_Button_ByID" );

@@ -145,6 +145,9 @@ public class AggregationConfiguration extends PSAcceptanceTest {
 
 		AggregationOptionDetailsImpl agcOptDetailsObj = new AggregationOptionDetailsImpl(agcConfigMap);
 		agcActionObj.clickNewAction(clientPartition);
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		agcOptDetailsObj.aggregationHeaderConfig();
 		agcOptDetailsObj.selectAggregationCustomFields();
 		agcOptDetailsObj.selectEventTypes();

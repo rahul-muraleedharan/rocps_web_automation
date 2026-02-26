@@ -141,6 +141,9 @@ public class CategoryFlCollectMapping extends PSAcceptanceTest
 				if ( !iscategoryFlCollMappingPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_CategFlCollecMapping_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configurecategoryFlCollMapping();
 					clickOnSave( combinOfCategFlCollection );
 					Log4jHelper.logInfo( "'Category File Collection Mapping' is successfully created with  combination of:- '" + combinOfCategFlCollection );

@@ -91,6 +91,9 @@ public class EventModellingDefinition extends PSAcceptanceTest
 					EventModellingDefinitionActionImpl eventModDefnActionImpl = new EventModellingDefinitionActionImpl();
 					EventModellingDefinitionDetailImpl eventModeDefnDetailImpl = new EventModellingDefinitionDetailImpl( eventModDefnMap );
 					eventModDefnActionImpl.clickNewAction( clientPartition, "Event Modelling Definition" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					eventModeDefnDetailImpl.openEventModellingDefinationDetail();
 					eventModeDefnDetailImpl.provideTableDefinationDetail();
 					eventModeDefnDetailImpl.saveEventModellingDefinition( name );

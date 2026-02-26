@@ -146,6 +146,9 @@ public class RoamingAgreementConfig extends PSAcceptanceTest
 				{
 					RoamingAgreeConfigAction roamingAgreeConfigActObj=new RoamingAgreeConfigAction();
 					roamingAgreeConfigActObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RoamingAgreemConfigDetail roamAgreeConfigDetailOb=new RoamingAgreemConfigDetail( roamingAgreeConfigMap );
 					roamAgreeConfigDetailOb.createRoamingAgreeConfig();
 					Log4jHelper.logInfo( "'Roaming Agreement Configuration'' is successfully created with tadig value:  '" + tadigCode+"'" );

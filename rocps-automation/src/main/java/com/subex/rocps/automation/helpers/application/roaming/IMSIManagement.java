@@ -144,6 +144,9 @@ public class IMSIManagement extends PSAcceptanceTest
 				{
 					IMSIManagementActionImpl imsiManagementActionImpl = new IMSIManagementActionImpl();
 					imsiManagementActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					IMSIManagementDetails iMSManagementDetails = new IMSIManagementDetails( imsiManagementMap );
 					iMSManagementDetails.createIMSIManagement();
 					Log4jHelper.logInfo( "'IMSI Management'' is successfully created with tadig value:  '" + tadigCode );

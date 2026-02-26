@@ -115,6 +115,8 @@ public class EventIdentifierValueGroup extends PSAcceptanceTest
 
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 
 					newEventIdentifierValueGroup();
 

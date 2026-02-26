@@ -133,6 +133,9 @@ public class UploadFileType extends PSAcceptanceTest
 				if ( !isuploadFileTypePresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_UploadFileType_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureuploadFileType();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Upload File Type' is successfully created with  Name:- '" + fileExtension );

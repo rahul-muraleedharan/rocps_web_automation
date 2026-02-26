@@ -136,6 +136,9 @@ public class FileUploadCategory extends PSAcceptanceTest
 				if ( !isfileUploadCategoryPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_fileUploadCategory_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configurefileUploadCategory();
 					clickOnSave();
 					Log4jHelper.logInfo( "'File Upload Category' is successfully created with  Name:- '" + categoryName );

@@ -107,6 +107,8 @@ public class TariffType extends PSAcceptanceTest
 
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_TariffType_detailXpath" );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newTariffType();
 
 					ButtonHelper.click( "OK_Button_ByID" );

@@ -156,6 +156,9 @@ public class BillParameterSearch extends PSAcceptanceTest
 				if ( !isBillParameterPresent )
 				{
 					billParameterActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 
 					BillParameterDetailImpl billParameterDetailImpl = new BillParameterDetailImpl( billParameterMap );
 					billParameterDetailImpl.configBillParameter();

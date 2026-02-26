@@ -125,6 +125,9 @@ public class InvoiceReconConfig extends PSAcceptanceTest
 	{
 		InvoiceReconConfigDetailImpl detailObj = new InvoiceReconConfigDetailImpl();
 		actionObj.clickNewAction( partition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(partition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		detailObj.invoiceReconBasicConfig( name, invoiceTemplate, reconsilationComponent, automationComponent, invoiceSelection, invoiceStep, autoBaseLine );
 		detailObj.invoiceReconDetailConfig( this.path, this.workBookName, this.sheetName, stepName,ciReconMap );
 		detailObj.saveInvoiceReconConfig( name );

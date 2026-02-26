@@ -136,6 +136,9 @@ public class TariffTypeToChargeTypeMap extends PSAcceptanceTest
 				if ( !istariffTypeToChargeTypePresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_TariffTyTOChgTyMap_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configuretariffTypeToChargeType();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Tariff Type To Charge Type Map' is successfully created with  'Tariff  Type':- '" + tariffType );

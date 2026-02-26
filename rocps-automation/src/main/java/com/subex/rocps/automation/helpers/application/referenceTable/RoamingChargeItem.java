@@ -138,6 +138,9 @@ public class RoamingChargeItem extends PSAcceptanceTest
 				if ( !isroamingChgItemPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "PS_Detail_roamChgItem_detailXpath" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureroamingChgItem();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Roaming Charged Item' is successfully created with  Value:- '" + value );

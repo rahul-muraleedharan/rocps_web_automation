@@ -142,6 +142,9 @@ public class EventUsgRequestHelper extends PSAcceptanceTest
 				EventUsgReqDetailImpl eventUsgReqDetailOb = new EventUsgReqDetailImpl( eventUsgReqMap );
 				EventUsgReqActionImpl eventUsgReqActionOb = new EventUsgReqActionImpl();
 				eventUsgReqActionOb.clickNewAction( clientPartition, "Event Usage Request" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				eventUsgReqDetailOb.configEventUsgRequest( description );
 				eventUsgReqDetailOb.saveEventUsgReq( description, currentRowCount );
 				assertTrue( iseventUsgReqPresent( description ), " Description is not found" );
@@ -174,6 +177,9 @@ public class EventUsgRequestHelper extends PSAcceptanceTest
 				EventUsgReqDetailImpl eventUsgReqDetailOb = new EventUsgReqDetailImpl( eventUsgReqMap );
 				EventUsgReqActionImpl eventUsgReqActionOb = new EventUsgReqActionImpl();
 				eventUsgReqActionOb.clickNewAction( clientPartition, "Event Usage Request" );
+				GenericHelper.waitForLoadmask();
+				NavigationHelper.selectPartition(clientPartition);
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
 				eventUsgReqDetailOb.configEventUsgRequest( description );
 				eventUsgReqDetailOb.saveEventUsgReq( description, currentRowCount );
 				assertTrue( iseventUsgReqPresent( description ), " Description is not found" );

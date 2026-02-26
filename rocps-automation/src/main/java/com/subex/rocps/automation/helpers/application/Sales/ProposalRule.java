@@ -142,6 +142,9 @@ public class ProposalRule extends PSAcceptanceTest
 				if ( !isproposalRulePresent )
 				{
 					proposalRuleActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					ProposalRuleDetail proposalRuleDetailImpl = new ProposalRuleDetail( proposalRuleMap );
 					proposalRuleDetailImpl.configureProposalRule();
 					Log4jHelper.logInfo( "Proposal Rule is successfuly saved with " + proposalRuleName );

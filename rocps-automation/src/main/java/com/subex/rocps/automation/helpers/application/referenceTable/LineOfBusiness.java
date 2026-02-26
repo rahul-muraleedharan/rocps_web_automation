@@ -91,6 +91,8 @@ public class LineOfBusiness extends PSAcceptanceTest
 
 					legcodeActionObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newLineOfBusiness();
 
 					saveEventLegCodeGroup();

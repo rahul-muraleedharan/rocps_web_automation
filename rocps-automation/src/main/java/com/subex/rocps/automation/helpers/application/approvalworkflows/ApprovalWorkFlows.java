@@ -105,6 +105,9 @@ public class ApprovalWorkFlows extends PSAcceptanceTest
 				if ( !isWorkflowPresent )
 				{
 					workflowActionObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newApprovalWorkflows();
 					workflowDetailObj.saveApprovalWorkflow( name );
 					Log4jHelper.logInfo( "Approval Workflows is created successfully with name " + name );

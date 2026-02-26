@@ -134,6 +134,9 @@ public class RoamingDefnGroup extends PSAcceptanceTest
 				if ( !isroamingDfnGrpPresent )
 				{
 					psActionImpl.clickNewAction( clientPartition, "//*[@id='window-scroll-panel']//div[text()='Name']" );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					configureroamingDfnGrp();
 					clickOnSave();
 					Log4jHelper.logInfo( "'Roaming Definition Group' is successfully created with  Name:- '" + name );

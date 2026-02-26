@@ -141,6 +141,9 @@ public class GLCodeDefn extends PSAcceptanceTest
 				{
 					GLCodeDefnActionImpl glCodeDefnActionImpl = new GLCodeDefnActionImpl();
 					glCodeDefnActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					GLCodeDefnDetails glCodeDefnDetails = new GLCodeDefnDetails( glCodeDefnMap );
 					glCodeDefnDetails.createGlCdDefn();
 					Log4jHelper.logInfo( "'GL Code Definition' is successfully created with name '" + glCdDefnNm );

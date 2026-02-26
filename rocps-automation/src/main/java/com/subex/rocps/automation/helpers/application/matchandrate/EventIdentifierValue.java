@@ -121,6 +121,8 @@ public class EventIdentifierValue extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newEventIdentifierValue();
 
 					genericHelperObj.detailSave( "Detail_eventValueSave_btnID", name, "Name" );

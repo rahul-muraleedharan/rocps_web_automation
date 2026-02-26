@@ -144,6 +144,9 @@ public class TestSIMManagement extends PSAcceptanceTest
 				{
 					TestSIMManagementAction testManagementAction = new TestSIMManagementAction();
 					testManagementAction.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					TestSIMManagementDetails teSimManagementDetails = new TestSIMManagementDetails( testSIMManagementMap );
 					teSimManagementDetails.createTestSimManagement();
 					Log4jHelper.logInfo( "Test SIM Management'' is successfully created with tadig value:  '" + tadigCode );

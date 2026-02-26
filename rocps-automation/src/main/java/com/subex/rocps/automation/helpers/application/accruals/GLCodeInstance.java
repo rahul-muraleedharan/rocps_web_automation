@@ -144,6 +144,9 @@ public class GLCodeInstance extends PSAcceptanceTest
 				{
 					GLCodeInstActionImpl glCodeInstActionImpl = new GLCodeInstActionImpl();
 					glCodeInstActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					GLCodeInstanceDetail glCodeInstanceDetail = new GLCodeInstanceDetail( glCodeInstMap );
 					glCodeInstanceDetail.createGlCodeInstance();
 

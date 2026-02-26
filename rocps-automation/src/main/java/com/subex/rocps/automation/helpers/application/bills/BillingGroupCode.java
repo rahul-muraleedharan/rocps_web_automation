@@ -257,6 +257,9 @@ public class BillingGroupCode extends PSAcceptanceTest
 	{
 		ProductUtil.waitForParentActionElementTOBeclickable( "Common Tasks" );
 		psGenericHelper.clickNewAction( clientPartition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ElementHelper.waitForElement( GenericHelper.getORProperty( "PS_Detail_billingGrpCode_popUp_code_xpath" ), searchScreenWaitSec );
 	}

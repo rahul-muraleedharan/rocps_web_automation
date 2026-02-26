@@ -157,6 +157,9 @@ public class DealSimulation extends PSAcceptanceTest
 				if ( !idDealSimulationPresent )
 				{
 					dealSimulationActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					DealSimulationDetailImpl dealSimulationDetailImpl = new DealSimulationDetailImpl( dealSimulationMap );
 					dealSimulationDetailImpl.createDealSimulation();
 					saveDealSimulation( dealSimulationName );

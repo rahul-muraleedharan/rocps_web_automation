@@ -95,6 +95,8 @@ public class EventNormalization extends PSAcceptanceTest {
 				if (!isEventNor) {
 					genericHelperObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					neweventNormalization();
 
 					ButtonHelper.click("PS_Detail_ok_buttonID");

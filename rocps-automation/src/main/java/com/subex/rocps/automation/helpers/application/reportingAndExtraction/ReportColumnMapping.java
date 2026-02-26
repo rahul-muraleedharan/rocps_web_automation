@@ -146,6 +146,9 @@ public class ReportColumnMapping extends PSAcceptanceTest
 				{
 					RepColumnMappingActImpl repColumnMappingActImpl = new RepColumnMappingActImpl();
 					repColumnMappingActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RepColumnMappingDetailImpl repMappingDetailImpl = new RepColumnMappingDetailImpl( reportColumnMappingMap );
 					repMappingDetailImpl.configRepColumMapping();
 					configRepColTableInstance();

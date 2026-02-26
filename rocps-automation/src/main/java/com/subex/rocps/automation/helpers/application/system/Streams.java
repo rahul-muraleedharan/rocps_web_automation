@@ -101,6 +101,9 @@ public class Streams extends PSAcceptanceTest
 		if ( !flag )
 		{
 			strImplObj.clickNewAction( streamName, partition );
+			GenericHelper.waitForLoadmask();
+			NavigationHelper.selectPartition(streamName);
+			GenericHelper.waitForLoadmask( searchScreenWaitSec );
 			strImplObj.validateScreenTitle();
 			TextBoxHelper.type( "Stream_Name", streamName );
 		}

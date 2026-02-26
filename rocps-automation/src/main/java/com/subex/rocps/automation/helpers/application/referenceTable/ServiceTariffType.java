@@ -98,6 +98,8 @@ public class ServiceTariffType extends PSAcceptanceTest
 				{
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newServiceTariffType();
 
 					ButtonHelper.click( "OK_Button_ByID" );

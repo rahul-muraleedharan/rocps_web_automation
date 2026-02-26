@@ -226,6 +226,9 @@ public class RoamingService extends PSAcceptanceTest
 	{
 		ProductUtil.waitForParentActionElementTOBeclickable( "Common Tasks" );
 		psGenericHelper.clickNewAction( clientPartition );
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ElementHelper.waitForElement( "PS_Detail_roamService_detailXpath", searchScreenWaitSec );
 	}

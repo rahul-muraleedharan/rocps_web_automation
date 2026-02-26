@@ -91,6 +91,8 @@ public class ElementSet extends PSAcceptanceTest {
 
 					genericHelperObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					createElementSet();
 					saveElementSet();
 

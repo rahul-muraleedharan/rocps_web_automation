@@ -148,6 +148,9 @@ public class RoamingConfiguration extends PSAcceptanceTest
 				if ( !isRoamingConfigPresent )
 				{
 					roamingConfigActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					RoamingConfigBasicDetails roamingConfigBasicDetails = new RoamingConfigBasicDetails( roamingConfigMap );
 					roamingConfigBasicDetails.createRoamingConfig();
 					Log4jHelper.logInfo( "'Roaming Configuration' is successfully created with tadig value:  '" + tadigCode + "' for configType -: " + configType );

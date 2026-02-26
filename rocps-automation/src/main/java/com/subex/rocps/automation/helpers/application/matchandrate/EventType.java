@@ -106,6 +106,8 @@ public class EventType extends PSAcceptanceTest {
 				if (!isEventTypePresent) {
 					genericHelperObj.clickNewAction(clientPartition);
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					eventTypebasicConfig();
 					ratingConfig();
 

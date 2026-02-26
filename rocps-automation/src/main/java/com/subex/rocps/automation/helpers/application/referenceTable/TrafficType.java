@@ -96,6 +96,8 @@ public class TrafficType extends PSAcceptanceTest
 
 					genericHelperObj.clickNewAction( clientPartition );
 					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newTrafficType();
 
 					//ButtonHelper.click( "OK_Button_ByID" );

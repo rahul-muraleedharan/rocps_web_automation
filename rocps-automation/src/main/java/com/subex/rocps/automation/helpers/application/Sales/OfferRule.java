@@ -142,6 +142,9 @@ public class OfferRule extends PSAcceptanceTest
 				if ( !isofferRulePresent )
 				{
 					offerRuleActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					OfferRuleDetail offerRuleDetailImpl = new OfferRuleDetail( offerRuleMap );
 					offerRuleDetailImpl.configureOfferRule();
 					Log4jHelper.logInfo( "Offer Rule is successfuly saved with " + offerRuleName );

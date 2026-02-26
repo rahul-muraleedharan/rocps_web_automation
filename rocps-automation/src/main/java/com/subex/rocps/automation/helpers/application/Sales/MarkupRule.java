@@ -142,6 +142,9 @@ public class MarkupRule extends PSAcceptanceTest
 				if ( !ismarkupRulePresent )
 				{
 					markupRuleActionImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					MarkupRuleDetail markupRuleDetailImpl = new MarkupRuleDetail( markupRuleMap );
 					markupRuleDetailImpl.configureMarkupRule();
 					Log4jHelper.logInfo( "Markup Rule is successfuly saved with " + markupRuleName );

@@ -147,6 +147,9 @@ public class UsageBackoutRequest extends PSAcceptanceTest
 				if ( !isUsgBackReqPresent )
 				{
 					usageBackoutReqActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					UsgBackoutReqDetailImpl usBackoutReqDetailImpl = new UsgBackoutReqDetailImpl( usageBackoutReqMap );
 					usBackoutReqDetailImpl.configUsgBackoutRequest();
 					Log4jHelper.logInfo( "'Usage Backout Request' is successfully created with ' description '" + description );
@@ -179,6 +182,9 @@ public class UsageBackoutRequest extends PSAcceptanceTest
 				if ( !isUsgBackReqPresent )
 				{
 					usageBackoutReqActImpl.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					UsgBackoutReqDetailImpl usBackoutReqDetailImpl = new UsgBackoutReqDetailImpl( usageBackoutReqMap );
 					usBackoutReqDetailImpl.configUsgBackoutRequest();
 					scheduleRequestAction( description );

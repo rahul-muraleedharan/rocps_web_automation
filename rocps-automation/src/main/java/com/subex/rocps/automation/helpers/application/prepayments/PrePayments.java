@@ -118,6 +118,9 @@ public class PrePayments extends PSAcceptanceTest {
 
 	private void newPrePaymentsConfig() throws Exception {
 		genericHelperObj.clickNewAction(clientPartition);
+		GenericHelper.waitForLoadmask();
+		NavigationHelper.selectPartition(clientPartition);
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		paymentDetailObj.prepaymentConfiguration(transactionReference, transactionDate, billProfile, currency, amount,
 				paymentMethod, comments);
 		paymentDetailObj.savePrePayments(transactionReference);

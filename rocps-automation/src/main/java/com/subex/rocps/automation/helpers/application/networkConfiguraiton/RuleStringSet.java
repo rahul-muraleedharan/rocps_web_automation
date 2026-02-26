@@ -98,6 +98,9 @@ public class RuleStringSet extends PSAcceptanceTest
 
 				if (!isRuleStringSetPresent()) {
 					ruleStringActionObj.clickNewAction( clientPartition );
+					GenericHelper.waitForLoadmask();
+					NavigationHelper.selectPartition(clientPartition);
+					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					newRuleStringSet();	
 					saveRuleStringSet();
 					Log4jHelper.logInfo("Rule String Set is created successfully with name " + name);
