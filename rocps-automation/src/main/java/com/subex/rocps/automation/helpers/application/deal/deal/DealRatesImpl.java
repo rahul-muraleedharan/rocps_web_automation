@@ -122,22 +122,25 @@ public class DealRatesImpl extends PSAcceptanceTest
 	/*
 	 * This method is for change rates currency
 	 */
-	public void changeRatesCurrency() throws Exception
-	{
+public void changeRatesCurrency() throws Exception
+{
+    ComboBoxHelper.select( "PS_Detail_DealRate_rateChange_txtId", rateType );
+    GenericHelper.waitForLoadmask( searchScreenWaitSec );
+    ComboBoxHelper.select( "PS_Detail_DealRate_Currency_txtID", currency );
+    GenericHelper.waitForLoadmask( searchScreenWaitSec );
+    ComboBoxHelper.select( "PS_Detail_DealRate_rateType_comboID", rateChange );
 
-		ComboBoxHelper.select( "rateChange_gwt_uid_", rateChange );
-		ComboBoxHelper.select( "PS_Detail_DealRate_Currency_txtID", currency );
-		ComboBoxHelper.select( "rateType_gwt_uid_", rateChange );
-		for ( int i = 0; i < tierArr.length; i++ )
-		{
-			ComboBoxHelper.select( "PS_Detail_DealRate_dealTier_comboID", tierArr[i] );
-			ratePerTier( rateArr[i] );
-			ElementHelper.waitForElement( "PS_Detail_DealRate_apply_BtnXapth", searchScreenWaitSec );
-			ButtonHelper.click( "Apply" );
-			GenericHelper.waitForLoadmask( searchScreenWaitSec );
-		}
-
-	}
+    GenericHelper.waitForLoadmask( searchScreenWaitSec );
+    for ( int i = 0; i < tierArr.length; i++ )
+    {
+        ComboBoxHelper.select( "PS_Detail_DealRate_dealTier_comboID", tierArr[i] );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        ratePerTier( rateArr[i] );
+        ElementHelper.waitForElement( "PS_Detail_DealRate_apply_BtnXapth", searchScreenWaitSec );
+        ButtonHelper.click( "Apply" );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+    }
+}
 
 	/*
 	 * This method is for rate per tier config
