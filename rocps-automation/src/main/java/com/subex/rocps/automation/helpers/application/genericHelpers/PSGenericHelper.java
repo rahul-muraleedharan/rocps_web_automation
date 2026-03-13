@@ -101,9 +101,9 @@ public class PSGenericHelper extends PSAcceptanceTest
 
 	public void clickNewAction( String clientPartition ) throws Exception
 	{
-		if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
+		if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
 			NavigationHelper.navigateToNew( clientPartition );
-		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
+		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
 			NavigationHelper.navigateToNew( configProp.getProperty( "partition" ) );
 		else
 			NavigationHelper.navigateToNew();

@@ -85,7 +85,7 @@ public class Log4jHelper extends AcceptanceTest {
 
 	public static void logInfo(String information) throws Exception {
 		try {
-			logger.info(information);
+			if (logger != null) logger.info(information);
 			System.out.println(information);
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -95,7 +95,7 @@ public class Log4jHelper extends AcceptanceTest {
 
 	public static void logError(String errorMessage) throws Exception {
 		try {
-			logger.error(errorMessage);
+			if (logger != null) logger.error(errorMessage);
 			System.out.println(errorMessage);
 		} catch (Exception e) {
 			throw e;
@@ -104,7 +104,7 @@ public class Log4jHelper extends AcceptanceTest {
 
 	public static void logWarning(String information) throws Exception {
 		try {
-			logger.warn(information);
+			if (logger != null) logger.warn(information);
 			System.out.println(information);
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
@@ -114,7 +114,7 @@ public class Log4jHelper extends AcceptanceTest {
 
 	public static void logDebug(String information) throws Exception {
 		try {
-			logger.debug(information);
+			if (logger != null) logger.debug(information);
 			System.out.println(information);
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);

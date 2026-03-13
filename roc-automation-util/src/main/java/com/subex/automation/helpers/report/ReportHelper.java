@@ -474,8 +474,8 @@ public class ReportHelper extends AcceptanceTest {
 	public static int getRunNumber(String os, String reportDirectory) throws Exception {
 		try {
 			int runCount = 1;
-			
-			if (os.equalsIgnoreCase("Windows")) {
+
+			if (os.equalsIgnoreCase("Windows") || execChannel == null) {
 				runCount = getRunNumber(reportDirectory);
 			}
 			else {
@@ -484,14 +484,14 @@ public class ReportHelper extends AcceptanceTest {
 				String[] result = remoteMachine.executeScripts(command1);
 				String command = "ls " + reportDirectory + " | sort -Vr | head -1";
 				result = remoteMachine.executeScripts(command);
-				
+
 				if (ValidationHelper.isNotEmpty(result)) {
 					String runNo = result[0].replace("Run", "").replace("\n", "").replace("\u00A0", "");
 					runCount = Integer.parseInt(runNo);
 					runCount++;
 				}
 			}
-			
+
 			return runCount;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);

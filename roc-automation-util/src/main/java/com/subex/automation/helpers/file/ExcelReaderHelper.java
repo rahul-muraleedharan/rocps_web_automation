@@ -36,6 +36,8 @@ public class ExcelReaderHelper extends AcceptanceTest {
 	
 	public ExcelReaderHelper(String excelPath) {
 		path = excelPath;
+		if (java.io.File.separatorChar == '/' && path != null && path.contains("\\"))
+			path = path.replace("\\", "/");
 	}
 	
 	protected XSSFWorkbook getWorkBook( ) throws Exception {
@@ -159,14 +161,20 @@ public class ExcelReaderHelper extends AcceptanceTest {
 	
 	protected void closeExcel() throws Exception {
 		try {
-			
+
 			excelSheet = null;
-			excelWorkbook.close();
-			opcPackage.clearRelationships();
-			opcPackage.revert();
-			opcPackage.close();
+			if (excelWorkbook != null) {
+				excelWorkbook.close();
+				excelWorkbook = null;
+			}
+			if (opcPackage != null) {
+				opcPackage.clearRelationships();
+				opcPackage.revert();
+				opcPackage.close();
+				opcPackage = null;
+			}
 			path = null;
-			
+
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;

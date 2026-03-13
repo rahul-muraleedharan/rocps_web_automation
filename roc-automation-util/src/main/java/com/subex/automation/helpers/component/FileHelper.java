@@ -283,16 +283,30 @@ public class FileHelper extends AcceptanceTest{
 					modifiedFile = lastModifiedFile.toString();
 			}
 			else {
-				String command = "cd " + directoryName + " && ls * | head -n 1";
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				String[] cmdResult = remoteMachine.executeScripts(command);
-
-				if (ValidationHelper.isEmpty(cmdResult))
-					modifiedFile = null;
-				else
-					modifiedFile = cmdResult[0];
+				if (execChannel != null) {
+					String command = "cd " + directoryName + " && ls * | head -n 1";
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					String[] cmdResult = remoteMachine.executeScripts(command);
+					if (ValidationHelper.isEmpty(cmdResult))
+						modifiedFile = null;
+					else
+						modifiedFile = cmdResult[0];
+				} else {
+					File dir = new File(directoryName);
+					File[] files = dir.listFiles();
+					File lastModifiedFile = null;
+					if (files != null && files.length > 0 && files[0] != null) {
+						lastModifiedFile = files[0];
+						for (int i = 1; i < files.length; i++) {
+							if (lastModifiedFile.lastModified() < files[i].lastModified() && (files[i].isFile()))
+								lastModifiedFile = files[i];
+						}
+					}
+					if (lastModifiedFile != null)
+						modifiedFile = lastModifiedFile.toString();
+				}
 			}
-			
+
 			return modifiedFile;
 		}
 		catch (Exception e) {
@@ -336,16 +350,36 @@ public class FileHelper extends AcceptanceTest{
 				}
 			}
 			else {
-				String command = "cd " + directoryName + " && ls -t1 " + fileNameFilter + "* | head -n 1";
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				String[] cmdResult = remoteMachine.executeScripts(command);
-
-				if (ValidationHelper.isEmpty(cmdResult))
-					modifiedFile = null;
-				else
-					modifiedFile = cmdResult[0];
+				if (execChannel != null) {
+					String command = "cd " + directoryName + " && ls -t1 " + fileNameFilter + "* | head -n 1";
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					String[] cmdResult = remoteMachine.executeScripts(command);
+					if (ValidationHelper.isEmpty(cmdResult))
+						modifiedFile = null;
+					else
+						modifiedFile = cmdResult[0];
+				} else {
+					final String filter = fileNameFilter;
+					File dir = new File(directoryName);
+					File[] files = dir.listFiles(new FilenameFilter() {
+						@Override
+						public boolean accept(File d, String name) {
+							return name.contains(filter);
+						}
+					});
+					File lastModifiedFile = null;
+					if (files != null && files.length > 0 && files[0] != null) {
+						lastModifiedFile = files[0];
+						for (int i = 1; i < files.length; i++) {
+							if (lastModifiedFile.lastModified() < files[i].lastModified() && (files[i].isFile()))
+								lastModifiedFile = files[i];
+						}
+					}
+					if (lastModifiedFile != null)
+						modifiedFile = lastModifiedFile.toString();
+				}
 			}
-			
+
 			return modifiedFile;
 		}
 		catch (Exception e) {
@@ -389,14 +423,35 @@ public class FileHelper extends AcceptanceTest{
 				}
 			}
 			else {
-				String command = "cd " + directoryName + " && ls -t1 " + fileNameFilter1 + "* | head -n 1";
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				String[] cmdResult = remoteMachine.executeScripts(command);
-				
-				if (ValidationHelper.isEmpty(cmdResult))
-					modifiedFile = null;
-				else
-					modifiedFile = cmdResult[0];
+				if (execChannel != null) {
+					String command = "cd " + directoryName + " && ls -t1 " + fileNameFilter1 + "* | head -n 1";
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					String[] cmdResult = remoteMachine.executeScripts(command);
+					if (ValidationHelper.isEmpty(cmdResult))
+						modifiedFile = null;
+					else
+						modifiedFile = cmdResult[0];
+				} else {
+					final String f1 = fileNameFilter1;
+					final String f2 = fileNameFilter2;
+					File dir = new File(directoryName);
+					File[] files = dir.listFiles(new FilenameFilter() {
+						@Override
+						public boolean accept(File d, String name) {
+							return name.contains(f1) && name.contains(f2);
+						}
+					});
+					File lastModifiedFile = null;
+					if (files != null && files.length > 0 && files[0] != null) {
+						lastModifiedFile = files[0];
+						for (int i = 1; i < files.length; i++) {
+							if (lastModifiedFile.lastModified() < files[i].lastModified() && (files[i].isFile()))
+								lastModifiedFile = files[i];
+						}
+					}
+					if (lastModifiedFile != null)
+						modifiedFile = lastModifiedFile.toString();
+				}
 			}
 			
 			return modifiedFile;
@@ -947,9 +1002,13 @@ public class FileHelper extends AcceptanceTest{
 			else {
 				if (FileWithPath.contains("\\"))
 					FileWithPath = FileWithPath.replace("\\", "/");
-				
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				remoteMachine.deleteFile(FileWithPath);
+				if (sftpChannel != null) {
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					remoteMachine.deleteFile(FileWithPath);
+				} else {
+					File deleteFile = new File(FileWithPath);
+					if (deleteFile.exists()) deleteFile.delete();
+				}
 			}
 		}
 		catch (Exception e) {
@@ -1003,13 +1062,17 @@ public class FileHelper extends AcceptanceTest{
 				directoryExists = checkDirectoryExists(dirPath);
 			}
 			else {
-				String command = "[ -d \"" + dirPath + "\" ] && echo \"yes\" || echo \"no\"";
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				String[] cmdResult = remoteMachine.executeScripts(command, false);
-				if (ValidationHelper.isNotEmpty(cmdResult)) {
-					cmdResult[0] = cmdResult[0].replace("\n", "");
-					if (cmdResult[0].equals("yes"))
-						directoryExists = true;
+				if (execChannel != null) {
+					String command = "[ -d \"" + dirPath + "\" ] && echo \"yes\" || echo \"no\"";
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					String[] cmdResult = remoteMachine.executeScripts(command, false);
+					if (ValidationHelper.isNotEmpty(cmdResult)) {
+						cmdResult[0] = cmdResult[0].replace("\n", "");
+						if (cmdResult[0].equals("yes"))
+							directoryExists = true;
+					}
+				} else {
+					directoryExists = checkDirectoryExists(dirPath);
 				}
 			}
 			
@@ -1024,8 +1087,12 @@ public class FileHelper extends AcceptanceTest{
 	public static boolean checkFileExists(String filePath) throws Exception {
 		try {
 			if (filePath.startsWith("/")) {
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				return remoteMachine.checkFileExists(filePath);
+				if (sftpChannel != null) {
+					RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
+					return remoteMachine.checkFileExists(filePath);
+				} else {
+					return new File(filePath).exists();
+				}
 			}
 			else
 				return checkDirectoryExists(filePath);

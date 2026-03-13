@@ -5,6 +5,7 @@ import com.subex.rocps.automation.helpers.selenium.PSAcceptanceTest;
 import com.subex.automation.helpers.application.NavigationHelper;
 import com.subex.automation.helpers.component.ElementHelper;
 import com.subex.automation.helpers.component.GenericHelper;
+import com.subex.automation.helpers.data.ValidationHelper;
 
 public class PSActionImpl extends PSAcceptanceTest
 {
@@ -46,9 +47,9 @@ public class PSActionImpl extends PSAcceptanceTest
 		PSGenericHelper.waitForParentActionElementTOBeclickable( parentActionNm );
 		psgenericHelperobj.validateActionText( parentActionNm, childActionNm );
 		NavigationHelper.navigateToAction( parentActionNm, childActionNm );
-		if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
+		if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
 			NavigationHelper.selectPartition( clientPartition );
-		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
+		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
 			NavigationHelper.selectPartition( configProp.getProperty( "partition" ) );
 		
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
@@ -58,9 +59,9 @@ public class PSActionImpl extends PSAcceptanceTest
 	public void clickOnActionWithPartition( String parentText, String childText, String subChildText, String clientPartition ) throws Exception
 	{
 		NavigationHelper.navigateToAction(parentText,childText,subChildText);
-		if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
+		if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !clientPartition.isEmpty() )
 			NavigationHelper.selectPartition( clientPartition );
-		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && Boolean.valueOf( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
+		else if ( configProp.getProperty( "clientPartitionFlag" ) != null && ValidationHelper.isTrue( configProp.getProperty( "clientPartitionFlag" ) ) && !configProp.getProperty( "partition" ).isEmpty() )
 			NavigationHelper.selectPartition( configProp.getProperty( "partition" ) );
 		
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
