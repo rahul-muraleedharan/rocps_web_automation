@@ -54,33 +54,60 @@ public class FileHelper extends AcceptanceTest{
 		try {
 			fileFieldXpath = GenericHelper.getORProperty(fileFieldXpath);
 			fileNamewithPath = GenericHelper.getPath(automationOS, fileNamewithPath);
-			MouseHelper.click(fileFieldXpath);
-			Thread.sleep(2000); // Wait for native file dialog to open
 
-			//StringSelection is a class that can be used for copy and paste operations.
-			StringSelection stringSelection = new StringSelection(fileNamewithPath);
-			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+			if (automationOS != null && automationOS.equalsIgnoreCase("Linux")) {
+				// On Linux, use xdotool to interact with the GTK file dialog.
+				// This avoids AWT Robot/clipboard which require a headful JVM.
+				MouseHelper.click(fileFieldXpath);
+				Thread.sleep(2000); // Wait for native GTK file dialog to open
 
-			Robot robot = new Robot();
-			try {
-	            // Ctrl+V to paste file path from clipboard
-	            robot.keyPress(KeyEvent.VK_CONTROL);
-	            robot.keyPress(KeyEvent.VK_V);
-	            robot.keyRelease(KeyEvent.VK_V);
-	            robot.keyRelease(KeyEvent.VK_CONTROL);
-	            Thread.sleep(1000);
+				String display = System.getenv("DISPLAY");
+				if (display == null || display.isEmpty()) display = ":0";
 
-	            // Press Enter to confirm file selection
-	            robot.keyPress(KeyEvent.VK_ENTER);
-	            robot.keyRelease(KeyEvent.VK_ENTER);
-	            Thread.sleep(2000);
+				// Ctrl+L to open the GTK file dialog location bar
+				ProcessBuilder ctrlL = new ProcessBuilder("xdotool", "key", "--clearmodifiers", "ctrl+l");
+				ctrlL.environment().put("DISPLAY", display);
+				ctrlL.start().waitFor();
+				Thread.sleep(2500);
+
+				// Type the file path with a per-keystroke delay to avoid dropped/extra characters
+				ProcessBuilder typePath = new ProcessBuilder("xdotool", "type", "--clearmodifiers", "--delay", "50", fileNamewithPath);
+				typePath.environment().put("DISPLAY", display);
+				typePath.start().waitFor();
+				Thread.sleep(2500);
+
+				// Press Enter to confirm
+				ProcessBuilder enter = new ProcessBuilder("xdotool", "key", "Return");
+				enter.environment().put("DISPLAY", display);
+				enter.start().waitFor();
+				Thread.sleep(5500);
+			} else {
+				//StringSelection is a class that can be used for copy and paste operations.
+				StringSelection stringSelection = new StringSelection(fileNamewithPath);
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+
+				MouseHelper.click(fileFieldXpath);
+				Thread.sleep(2000); // Wait for native file dialog to open
+
+				Robot robot = new Robot();
+				try {
+					// Ctrl+V to paste file path from clipboard
+					robot.keyPress(KeyEvent.VK_CONTROL);
+					robot.keyPress(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_CONTROL);
+					Thread.sleep(1000);
+
+					// Press Enter to confirm file selection
+					robot.keyPress(KeyEvent.VK_ENTER);
+					robot.keyRelease(KeyEvent.VK_ENTER);
+					Thread.sleep(2000);
+				} catch (Exception exp) {
+					FailureHelper.setErrorMessage(exp);
+					throw exp;
+				}
 			}
-			catch (Exception exp) {
-				FailureHelper.setErrorMessage(exp);
-				throw exp;
-	        }
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;
 		}
@@ -821,6 +848,16 @@ public class FileHelper extends AcceptanceTest{
 	        
 	        	CopyFile.copyFile(sourceDir + "\\" + sourceFileName, destinationDir + "\\" + destinationFileName, failTestCase);
 			}
+	        else if (automationOS != null && automationOS.equalsIgnoreCase("Linux")) {
+	        	// Local Linux-to-Linux copy — avoid SSH when running on the same machine
+	        	Path destDir = Paths.get(destinationDir);
+	        	if (Files.notExists(destDir)) {
+	        		Files.createDirectories(destDir);
+	        	}
+	        	Files.copy(Paths.get(sourceDir + "/" + sourceFileName),
+	        			destDir.resolve(destinationFileName),
+	        			java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+	        }
 	        else {
 	        	RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
 	        	remoteMachine.copyDirectory(sourceDir + "/" + sourceFileName, destinationDir, destinationFileName, failTestCase);
@@ -831,7 +868,7 @@ public class FileHelper extends AcceptanceTest{
 			throw e;
 		}
 	}
-	
+
 	public static void copyFile(String os, String sourceDir, String destinationDir, String sourceFileName, String destinationFileName, boolean failTestCase) throws Exception {
 		try {
 			if (os.equalsIgnoreCase("Windows")) {

@@ -70,12 +70,12 @@ public class TaskSchedule extends PSAcceptanceTest
 				String filePath = map.get( "FilePath" ).get( i );
 
 				String fileDestPath = configProp.getDataDirPath() + fileDestDir;
-				if ( !filePath.isEmpty() && filePath.contains( "\\" ) || filePath.contains( "//" ) )
+				if ( !filePath.isEmpty() && ( filePath.contains( "\\" ) || filePath.contains( "//" ) || filePath.startsWith( "/" ) ) )
 					fileSrcPath = filePath;
 				else
 					fileSrcPath = automationPath + configProp.getProperty( filePath );
 				System.out.println("SOurce File is "+fileSrcPath);
-				System.out.println("Dest  File is "+fileSrcPath);
+				System.out.println("Dest  File is "+fileDestPath);
 				copyFileHelper( fileName, fileDestPath, fileSrcPath );
 				FileCollectionHelper obj = new FileCollectionHelper();
 				obj.scheduleFileCollection( fcName );
