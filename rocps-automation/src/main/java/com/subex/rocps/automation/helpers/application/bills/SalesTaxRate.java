@@ -241,8 +241,9 @@ public class SalesTaxRate extends PSAcceptanceTest
 	public boolean salesTaxRateFilter(String salesTaxName, String validOnFilter) throws Exception
 	{
 		CalendarHelper.setOnDate("dummySalesTaxValidOn", validOnFilter);
-		ButtonHelper.click("SearchButton");
-		genericHelperObj.waitforHeaderElement("Rate");
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
+		SearchGridHelper.gridFilterSearchWithComboBox( "PS_SalesTax_drpdwn", salesTaxName, "Sales Tax" );
+		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		return GridHelper.isValuePresent( "SearchGrid", salesTaxName, "Sales Tax" );
 	}
 	/*
@@ -257,5 +258,35 @@ public class SalesTaxRate extends PSAcceptanceTest
 		mapRowKeys = ExcelHolder.getKey( Map, "MapRowKeys" );
 
 	}
+
+
+	public void salesTaxRateCreationnewPeriod() throws Exception
+	{
+		try
+		{
+			NavigationHelper.navigateToScreen( "Sales Tax Rate" );
+			for ( paramVal = 0; paramVal < colSize; paramVal++ )
+			{
+
+				salesRateMap = excelHolderObj.dataMap( paramVal );
+				assertEquals( NavigationHelper.getScreenTitle(), "Sales Tax Rate Search" );
+				//ButtonHelper.click( "ClearButton" );
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
+				initializeVariables( salesRateMap );
+				newSalesTaxRate();
+
+			}
+		}
+		catch ( Exception e )
+		{
+
+			FailureHelper.setErrorMessage( e );
+			throw e;
+		}
+
+	}
+
+
+
 
 }
