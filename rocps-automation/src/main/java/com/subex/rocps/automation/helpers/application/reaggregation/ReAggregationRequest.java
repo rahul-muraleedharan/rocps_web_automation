@@ -144,9 +144,12 @@ public class ReAggregationRequest extends PSAcceptanceTest
 	protected void newReAggregationRequest() throws Exception
 	{
 		reaggDetailObj.basicDetails( fromDate, toDate, description );
+        GenericHelper.waitInSeconds("2");
 		aggregationProcessor();
-		addBillProfileBillPeriod();
-		reaggDetailObj.saveReAggregationRequest();
+        GenericHelper.waitInSeconds("2");
+        addBillProfileBillPeriod();
+        GenericHelper.waitInSeconds("4");
+        reaggDetailObj.saveReAggregationRequest();
 		Log4jHelper.logInfo( "Re-Aggregation Request is created successfully :" + description );
 
 	}

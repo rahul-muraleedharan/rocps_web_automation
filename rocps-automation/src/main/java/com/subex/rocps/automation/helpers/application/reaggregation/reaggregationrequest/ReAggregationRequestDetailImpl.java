@@ -135,6 +135,7 @@ public class ReAggregationRequestDetailImpl extends PSAcceptanceTest
 				reaggActionObj.addBillProfile();
 				billProfileGridProfileSelection( accountAr[index], billProfileAr[index] );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
+                GenericHelper.waitInSeconds("2");
 				String billProfileActual = billProfileMap.get( billProfileAr[index] );
 				assertTrue( GridHelper.isValuePresent( "PS_Detail_reaggregation_billProfile_gridID", billProfileActual, "Profile" ), "Bill Profile not fount" );
 
@@ -289,9 +290,13 @@ public class ReAggregationRequestDetailImpl extends PSAcceptanceTest
 		GenericHelper.waitForLoadmask(searchScreenWaitSec);
 		reaggActionObj.scheduleReAggregation();
 		assertTrue( isPopupPresnet( "Confirm", scheduleMsg ) );
+        GenericHelper.waitInSeconds("1");
 		ButtonHelper.click( "YesButton" );
 		GenericHelper.waitForLoadmask();
-		assertTrue( isPopupPresnet( "Information", taskMsg ) );
+        GenericHelper.waitForLoadmask();
+        assertTrue( isPopupPresnet( "Information", taskMsg )||isPopupPresnet( "Re-aggregation Request", taskMsg ) );
+        //Information
+        GenericHelper.waitInSeconds("1");
 		ButtonHelper.click( "OK_TRT_Button" );
 		GenericHelper.waitForLoadmask(searchScreenWaitSec);
 

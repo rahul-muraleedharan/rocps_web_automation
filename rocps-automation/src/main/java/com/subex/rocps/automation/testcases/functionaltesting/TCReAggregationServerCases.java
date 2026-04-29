@@ -5,6 +5,8 @@ import com.subex.rocps.automation.helpers.application.reaggregation.ReAggregatio
 import com.subex.rocps.automation.helpers.application.system.PSTaskSearchHelper;
 import com.subex.rocps.automation.helpers.application.system.TaskSchedule;
 import com.subex.rocps.automation.helpers.selenium.PSAcceptanceTest;
+import com.subex.automation.helpers.application.screens.TaskControllerHelper;
+
 
 import com.subex.automation.helpers.application.screens.TaskSearchHelper;
 import com.subex.automation.helpers.util.FailureHelper;
@@ -12,10 +14,27 @@ import com.subex.automation.helpers.util.FailureHelper;
 public class TCReAggregationServerCases extends PSAcceptanceTest
 {
 	String path = System.getProperty( "user.dir" ) + "\\src\\main\\resources\\";
-	String workBookName = "FunctionalTestCases.xlsx";
+	String workBookName = "UsageBackoutRequestTestCases.xlsx";
 	String sheetName = "ReAggregationRequest";
 
-	@org.testng.annotations.Test( priority = 1, description = "ReAggregationRequest creation", groups =
+
+    @org.testng.annotations.Test( priority = 1, enabled = true, description = "task Controller capabilities", retryAnalyzer = com.subex.rocps.automation.helpers.listener.Retry.class )
+	public void taskControllerCapabilities() throws Exception
+	{
+		try
+		{
+
+			TaskControllerHelper taskObj = new TaskControllerHelper();
+			taskObj.setTaskControllerCapability( path, workBookName, sheetName, "TCCapability", 1 );
+		}
+		catch ( Exception e )
+		{
+			FailureHelper.setErrorMessage( e );
+			throw e;
+		}
+	}
+
+	@org.testng.annotations.Test( priority = 2, description = "ReAggregationRequest creation", groups =
 	{ "Server" } )
 	public void reAggregationRequestCreation() throws Exception
 	{
@@ -31,7 +50,7 @@ public class TCReAggregationServerCases extends PSAcceptanceTest
 		}
 	}
 
-	@org.testng.annotations.Test( priority = 2, description = "ReAggregationRequest - Schedule Action", groups =
+	@org.testng.annotations.Test( priority = 3, description = "ReAggregationRequest - Schedule Action", groups =
 	{ "Server" } )
 	public void reAggregationschedule() throws Exception
 	{
@@ -47,7 +66,7 @@ public class TCReAggregationServerCases extends PSAcceptanceTest
 		}
 	}
 
-	@org.testng.annotations.Test( priority = 3, description = "run aggregation master task and verifying task status and aggreg", groups =
+	@org.testng.annotations.Test( priority = 4, description = "run aggregation master task and verifying task status and aggreg", groups =
 	{ "Server" } )
 	public void serverSideCases() throws Exception
 	{
