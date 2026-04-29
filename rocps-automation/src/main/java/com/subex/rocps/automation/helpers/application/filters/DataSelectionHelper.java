@@ -618,6 +618,31 @@ public class DataSelectionHelper extends PSAcceptanceTest
 
 	}
 
+    public void collectedFilesearchUsg( String fileSource, String token, String fileName ) throws Exception
+    {
+        String currDate = DateHelper.getCurrentDate();
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        genericHelperObj.waitforPopupHeaderElement( "Polled" );
+        if ( ValidationHelper.isNotEmpty( fileSource ) )
+            ComboBoxHelper.select( "fileCollection_fileSource_gwt_uid_", fileSource );
+        if ( ValidationHelper.isNotEmpty( token ) )
+            ComboBoxHelper.select( "fileCollection_tokenTbl_gwt_uid_", token );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        CalendarHelper.setBeforeDate( "Detail_popUpWindowId", "clfPolledDttm", currDate + " 23:59:59" );
+        ButtonHelper.click( "SearchButton" );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        genericHelperObj.scrollforHeaderElement( "SearchGrid", "File Size" );
+        PSSearchGridHelper.gridFilterSearchWithTextBox( "fileTbl$filFilename", fileName, "File Name" );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        GridHelper.clickRow( "Detail_popUpWindowId", "SearchGrid", fileName, "File Name" );
+        ButtonHelper.clickIfEnabled( "Detail_popUpWindowId", "OK_Button_ByID" );
+        GenericHelper.waitForLoadmask( searchScreenWaitSec );
+        ElementHelper.waitForElementToDisappear( GenericHelper.getORProperty( "ps_Detail_entityPopupS_Xpath" ), searchScreenWaitSec );
+
+    }
+
+
+
 	/*This method is Table Instance Search */
 	public void tableInstanceSearch( String value ) throws Exception
 	{

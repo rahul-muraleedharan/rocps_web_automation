@@ -166,7 +166,8 @@ public class UsgBackoutReqDetailImpl extends PSAcceptanceTest
 	private void configCollectedFileGridField( String fileSource, String token, String fileName ) throws Exception
 	{
 		ButtonHelper.click( "PS_Detail_usgBackoutReq_collFile_add_btnId" );
-		dataSelectionHelper.collectedFilesearch( fileSource, token, fileName );
+		dataSelectionHelper.collectedFilesearchUsg( fileSource, token, fileName );
+
 	}
 
 	// collectedFlgrid columns keys
