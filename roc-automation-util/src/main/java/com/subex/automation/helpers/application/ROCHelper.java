@@ -104,12 +104,11 @@ public class ROCHelper extends AcceptanceTest {
 					deployPath = deploy + "\\deploy\\deploy";
 			}
 			else {
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				if (remoteMachine.checkDirectoryExists(deploy + "/bin"))
+				if (FileHelper.checkDirectoryExists(applicationOS, deploy + "/bin"))
 					deployPath = deploy;
-				else if (remoteMachine.checkDirectoryExists(deploy + "/deploy/bin"))
+				else if (FileHelper.checkDirectoryExists(applicationOS, deploy + "/deploy/bin"))
 					deployPath = deploy + "/deploy";
-				else if (remoteMachine.checkDirectoryExists(deploy + "/deploy/deploy/bin"))
+				else if (FileHelper.checkDirectoryExists(applicationOS, deploy + "/deploy/deploy/bin"))
 					deployPath = deploy + "/deploy/deploy";
 			}
 			

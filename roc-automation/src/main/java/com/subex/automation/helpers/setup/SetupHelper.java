@@ -190,7 +190,7 @@ public class SetupHelper extends ROCAcceptanceTest {
 	
 	private static boolean download(DownloadBinaries download, String downloadURL, String fileName, boolean useAuthentication) throws Exception {
 		try {
-			if (download.isURLAvailable(downloadURL, downloadPath + "/" + fileName, useAuthentication)) {
+			if (download.isURLAvailable(downloadURL)) {
 				Log4jHelper.logInfo("Download url is available\n");
 				
 				if (applicationOS.equalsIgnoreCase("Windows")) {

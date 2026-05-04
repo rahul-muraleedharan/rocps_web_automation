@@ -126,46 +126,32 @@ public class DownloadBinaries extends AcceptanceTest{
 		}
 	}
 	
-	public boolean isURLAvailable(String downloadURL, String destination, boolean useAuthentication) throws Exception {
+	private int headStatus(URL url, String authStringEnc) throws Exception {
+		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+		httpCon.setRequestMethod("GET");
+		httpCon.setInstanceFollowRedirects(true);
+		if (ValidationHelper.isNotEmpty(authStringEnc))
+			httpCon.setRequestProperty("Authorization", "Basic " + authStringEnc);
 		try {
-			boolean isAvailable = false;
-			
-			if (applicationOS.equalsIgnoreCase("Windows")) {
-				URL url = new URL(downloadURL);
-				HttpURLConnection httpCon = getURLConnection(url, destination, null);
-				int code = httpCon.getResponseCode();
-				
-				if (!(code == 200)) {
-					httpCon.disconnect();
-					
-					String authStringEnc = getAuthentication();
-					httpCon = getURLConnection(url, destination, authStringEnc);
-					code = httpCon.getResponseCode();
-					httpCon.disconnect();
-				}
-				
-				if (code == 404 || !(code == 200))
-					isAvailable = false;
-				else
-					isAvailable = true;
+			return httpCon.getResponseCode();
+		}
+		finally {
+			httpCon.disconnect();
+		}
+	}
+
+	public boolean isURLAvailable(String downloadURL) throws Exception {
+		try {
+			URL url = new URL(downloadURL);
+			int code = headStatus(url, null);
+
+			if (code != 200) {
+				String authStringEnc = getAuthentication();
+				if (ValidationHelper.isNotEmpty(authStringEnc))
+					code = headStatus(url, authStringEnc);
 			}
-			else {
-				String command = null;
-				if (useAuthentication && ValidationHelper.isNotEmpty(configProp.getJenkinsUsername()))
-					command = "curl -u " + configProp.getJenkinsUsername() + ":" + configProp.getJenkinsPassword() + " -Is \"" + downloadURL + "\" | head -1";
-				else
-					command = "curl -Is \"" + downloadURL + "\" | head -1";
-				
-				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
-				String[] cmdResult = remoteMachine.executeScripts(command, true, 1000);
-				
-				if (ValidationHelper.isNotEmpty(cmdResult) && cmdResult[0].contains("HTTP/1.1 200"))
-					isAvailable = true;
-				else
-					isAvailable = false;
-			}
-			
-			return isAvailable;
+
+			return code == 200;
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;
