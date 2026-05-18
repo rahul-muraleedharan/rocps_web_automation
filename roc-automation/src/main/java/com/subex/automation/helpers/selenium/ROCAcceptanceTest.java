@@ -103,19 +103,27 @@ public class ROCAcceptanceTest extends AcceptanceTest {
 	@Parameters({ "config" } )
 	public void startApp( String fileName ) throws Exception {
 		try {
+			errorMsg = null;
+			result = null;
+
+			if (suiteName != null && suiteName.equalsIgnoreCase("Setup")) {
+				Log4jHelper.logInfo("Suite '" + suiteName + "' detected - skipping product version detection, deploy path resolution and login (application not yet installed).");
+				testCaseName = this.getClass().getSimpleName();
+				testReport = ReportHelper.startReport(report, testCaseName);
+				return;
+			}
+
 			ROCHelper rocHelper = new ROCHelper();
 			versionNo = rocHelper.readProductVersion();
 			deployPath = rocHelper.getDeployPath(configProp.getDeployPath());
 			updateReportProperties();
-			errorMsg = null;
-			result = null;
-			
+
 			if (recordExecution) {
 				vh = new VideoHelper();
 				String videoFilename = suiteName + "_" + DateHelper.getCurrentDateTime("ddMMyyyy_HHmm");
 			//	vh.startRecording(reportLocation + "\\VideoRecordings", videoFilename);
 			}
-			
+
 			if (suiteName != null && !suiteName.equalsIgnoreCase("Restore Db Backup")) {
 				LoginHelper login = new LoginHelper();
 				login.loginWithConfigPropertyDetails();
@@ -183,7 +191,7 @@ public class ROCAcceptanceTest extends AcceptanceTest {
 			errorMsg = null;
 			result = null;
 			
-	        if (!suiteName.equals("Create DB Backup") && !suiteName.equals("Restore DB Backup")) {
+	        if (!suiteName.equals("Create DB Backup") && !suiteName.equals("Restore DB Backup") && !suiteName.equalsIgnoreCase("Setup")) {
 		        ROCHelper rocHelper = new ROCHelper();
 				rocHelper.handleSessionTimeout();
 	        }

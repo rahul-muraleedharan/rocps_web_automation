@@ -75,6 +75,172 @@ public class CreateNewDB extends AcceptanceTest {
 		}
 	}
 	
+	/**
+	 * Drops the Reference/Usage database (and its user) WITHOUT recreating it -
+	 * the teardown counterpart of {@link #createDataBase(String)}. Uses the same
+	 * connection parameters as create (PostgreSQL connects as 'postgres').
+	 */
+	public void dropDataBase(String databaseType) throws Exception {
+		try {
+			updateParameters(databaseType);
+
+			if (dbType.equalsIgnoreCase("sqlserver"))
+				dropDBInSQLServer();
+			else if (dbType.equalsIgnoreCase("oracle"))
+				dropDBInOracle();
+			else if (dbType.equalsIgnoreCase("PostgreSQL") || dbType.equalsIgnoreCase("Postgre"))
+				dropDBInPostgreSQL();
+		}
+		catch (Exception e) {
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+	}
+
+	private void dropDBInPostgreSQL() throws Exception {
+		try {
+			if (portNumber.equals(""))
+				portNumber = configProp.getDBPortNumber();
+
+			url = "jdbc:postgresql://" + dbHost + ":" + portNumber + "/postgres";
+
+			Class.forName("org.postgresql.Driver").newInstance();
+			connection = DriverManager.getConnection(url, "postgres", "");
+			statement = connection.createStatement();
+
+			// A database with open connections cannot be dropped.
+			statement.execute("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '" + dbName + "' AND pid <> pg_backend_pid()");
+			statement.executeUpdate("DROP DATABASE IF EXISTS " + dbName);
+
+			// DROP OWNED BY removes objects/privileges the role still holds
+			// (in any database) so DROP USER does not fail with a dependency
+			// error. It errors if the role is absent, so guard on existence.
+			ResultSet roleRs = statement.executeQuery("SELECT 1 FROM pg_roles WHERE rolname = '" + username + "'");
+			boolean roleExists = roleRs != null && roleRs.next();
+			if (roleExists) {
+				statement.executeUpdate("DROP OWNED BY " + username + " CASCADE");
+				statement.executeUpdate("DROP USER " + username);
+			}
+
+			Log4jHelper.logInfo("Dropped PostgreSQL Database '" + dbName + "' and User '" + username + "'");
+		}
+		catch (ClassNotFoundException e) {
+			FailureHelper.setError("Could not find the class Name : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (SQLException e) {
+			FailureHelper.setError("SQl exception : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (Exception e) {
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+		}
+	}
+
+	private void dropDBInOracle() throws Exception {
+		try {
+			url = "jdbc:oracle:thin:@" + dbHost + ":" + portNumber + ":" + dbInstance;
+
+			Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+			if (dbHost.equals("10.113.49.82"))
+				connection = DriverManager.getConnection(url, "test", "test");
+			else
+				connection = DriverManager.getConnection(url, "sys as sysdba", "sys");
+			statement = connection.createStatement();
+
+			ResultSet rs = statement.executeQuery("select username from dba_users where username='" + username.toUpperCase() + "'");
+			if (rs != null && rs.next()) {
+				statement.executeUpdate("drop user " + username + " cascade");
+				Log4jHelper.logInfo("Dropped Oracle User " + username);
+			}
+		}
+		catch (ClassNotFoundException e) {
+			FailureHelper.setError("Could not find the class Name : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (SQLException e) {
+			FailureHelper.setError("SQl exception : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (Exception e) {
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+		}
+	}
+
+	private void dropDBInSQLServer() throws Exception {
+		try {
+			url = "jdbc:jtds:sqlserver://" + dbHost + ";Instance=" + dbInstance + ";PrepareSQL=0";
+
+			Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
+			connection = DriverManager.getConnection(url, username, password);
+			statement = connection.createStatement();
+			statement.executeUpdate("DROP DATABASE IF EXISTS " + dbName);
+			Log4jHelper.logInfo("Dropped SQL Server Database " + dbName);
+		}
+		catch (ClassNotFoundException e) {
+			FailureHelper.setError("Could not find the class Name : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (SQLException e) {
+			FailureHelper.setError("SQl exception : " + e.getMessage());
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		catch (Exception e) {
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+		finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				}
+				catch (SQLException e) {} // nothing we can do
+			}
+		}
+	}
+
 	private void createDBInSQLServer() throws Exception {
 		try {
 			url = "jdbc:jtds:sqlserver://"+ dbHost + ";Instance=" + dbInstance + ";PrepareSQL=0";

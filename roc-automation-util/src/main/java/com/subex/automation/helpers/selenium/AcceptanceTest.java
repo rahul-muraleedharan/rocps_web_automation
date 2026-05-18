@@ -107,9 +107,11 @@ public class AcceptanceTest extends Assert {
 	@AfterSuite(alwaysRun = true)
 	public static void stopWebDriver() throws Exception {
 		try {
-			Log4jHelper.logInfo("Stopping WebDriver ...");
-			driver.quit();
-			Log4jHelper.logInfo("WebDriver Stopped.");
+			if (driver != null) {
+				Log4jHelper.logInfo("Stopping WebDriver ...");
+				driver.quit();
+				Log4jHelper.logInfo("WebDriver Stopped.");
+			}
 		} catch (Exception e) {
 			FailureHelper.reportFailure(e);
 		} finally {
@@ -128,6 +130,10 @@ public class AcceptanceTest extends Assert {
 	@BeforeClass(alwaysRun = true)
 	public void startWebDriver() throws Exception {
 		try {
+			if (suiteName != null && suiteName.equalsIgnoreCase("Setup")) {
+				Log4jHelper.logInfo("Suite '" + suiteName + "' detected - skipping browser launch (application not yet installed).");
+				return;
+			}
 //			if (result == null || !result.equals("skip")) {
 			GenericHelper.calculatePerformance();
 
@@ -188,9 +194,11 @@ public class AcceptanceTest extends Assert {
 	@AfterClass(alwaysRun = true)
 	public static void closeBrowser() throws Exception {
 		try {
-			Log4jHelper.logInfo("Stopping WebDriver ...");
-			driver.quit();
-			Log4jHelper.logInfo("WebDriver Stopped.");
+			if (driver != null) {
+				Log4jHelper.logInfo("Stopping WebDriver ...");
+				driver.quit();
+				Log4jHelper.logInfo("WebDriver Stopped.");
+			}
 		} catch (Exception e) {
 			FailureHelper.reportFailure(e);
 		}

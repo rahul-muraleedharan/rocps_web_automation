@@ -331,7 +331,9 @@ public class ReportHelper extends AcceptanceTest {
 	
 	private static void addScreenShotToStepKey(String keyWordColor, boolean attachScreenShot) throws Exception {
 		try {
-			if (!stepKeys.contains("Show/Hide Screenshot") && driver != null && driver.toString() != null) {
+			if (driver == null)
+				return;
+			if (stepKeys != null && !stepKeys.contains("Show/Hide Screenshot") && driver.toString() != null) {
 				
 				if (attachScreenShot) {
 					String screenShot = captureScreen();
@@ -355,6 +357,8 @@ public class ReportHelper extends AcceptanceTest {
 	
 	public static String captureScreen() throws Exception{
 		try {
+			if (driver == null)
+				return null;
 			TakesScreenshot newScreen = (TakesScreenshot) driver;
 			String scnShot = newScreen.getScreenshotAs(OutputType.BASE64);
 
@@ -387,6 +391,8 @@ public class ReportHelper extends AcceptanceTest {
 	private static String takeScreenShot(String testCaseName) throws Exception {
 		String fileNameWithPath = null;
 		try {
+			if (driver == null)
+				return null;
 	    	String dateTime = DateHelper.getCurrentDateTime("ddMMYYYY_HHmm");
 	    	if (ValidationHelper.isEmpty(testCaseName)) {
 	    		if (ValidationHelper.isEmpty(ReportHelper.testCaseName))

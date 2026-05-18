@@ -848,8 +848,9 @@ public class FileHelper extends AcceptanceTest{
 	        
 	        	CopyFile.copyFile(sourceDir + "\\" + sourceFileName, destinationDir + "\\" + destinationFileName, failTestCase);
 			}
-	        else if (automationOS != null && automationOS.equalsIgnoreCase("Linux")) {
-	        	// Local Linux-to-Linux copy — avoid SSH when running on the same machine
+	        else if (automationOS != null && automationOS.equalsIgnoreCase("Linux")
+	        		&& ValidationHelper.isEmpty(configProp.getRemoteHostname())) {
+	        	// Local Linux-to-Linux copy — only when no remote host is configured
 	        	Path destDir = Paths.get(destinationDir);
 	        	if (Files.notExists(destDir)) {
 	        		Files.createDirectories(destDir);
