@@ -33,12 +33,18 @@ public class DownloadBinaries extends AcceptanceTest{
 	
 			byte buffer1[] = new byte[1024 * 170];
 			int k = 0;
+			long total = 0;
+			long nextLogAt = 25L * 1024 * 1024;
 			Log4jHelper.logInfo("Download URL: " + downloadURL + "\nDownloading  ..");
 			while ((k = in.read(buffer1)) != -1) {
 				fout.write(buffer1, 0, k);
-				Log4jHelper.logInfo(".|");
+				total += k;
+				if (total >= nextLogAt) {
+					Log4jHelper.logInfo("Downloaded " + (total / (1024 * 1024)) + " MB ..");
+					nextLogAt += 25L * 1024 * 1024;
+				}
 			}
-			Log4jHelper.logInfo("\nDownload Done!!");
+			Log4jHelper.logInfo("\nDownload Done!! (" + total + " bytes)");
 		}
 		catch(FileNotFoundException e) {
 			FailureHelper.setError("Specified location '" + downloadURL + "' not found. May be build is in-progress or failed");
@@ -90,13 +96,17 @@ public class DownloadBinaries extends AcceptanceTest{
 	private HttpURLConnection getURLConnection(URL url, String destination, String authStringEnc) throws Exception {
 		try {
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-			
+
 			if (ValidationHelper.isNotEmpty(authStringEnc))
 				httpCon.setRequestProperty("Authorization", "Basic " + authStringEnc);
 //			httpCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0");
-			httpCon.setDoOutput(true);
+			// GET (not POST): setDoOutput(true) forces POST, which the Jenkins
+			// lastSuccessfulBuild permalink does not 302-follow and which stalls.
+			httpCon.setRequestMethod("GET");
+			httpCon.setInstanceFollowRedirects(true);
 			httpCon.setDoInput(true);
-			httpCon.setRequestProperty("content-type", "binary/data");
+			httpCon.setConnectTimeout(30000);
+			httpCon.setReadTimeout(300000);
 			if (ValidationHelper.isNotEmpty(destination))
 				httpCon.setRequestProperty("file-name", destination);
 			
@@ -130,6 +140,8 @@ public class DownloadBinaries extends AcceptanceTest{
 		HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 		httpCon.setRequestMethod("GET");
 		httpCon.setInstanceFollowRedirects(true);
+		httpCon.setConnectTimeout(30000);
+		httpCon.setReadTimeout(30000);
 		if (ValidationHelper.isNotEmpty(authStringEnc))
 			httpCon.setRequestProperty("Authorization", "Basic " + authStringEnc);
 		try {

@@ -186,7 +186,7 @@ public class Deal extends PSAcceptanceTest
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		genHelperObj.waitforHeaderElement( "Account" );
 		gridHelperObj.accountFilter( "grid_column_header_filtersearchGrid_account$paccName", "account", account, "Account"  );
-		//SearchGridHelper.gridFilterAdvancedSearch( "PS_Detail_Deal_account_filter_txtBxID", account, "Account" );
+		SearchGridHelper.gridFilterAdvancedSearch( "PS_Detail_Deal_account_filter_txtBxID", account, "Account" );
 		SearchGridHelper.gridFilterSearchWithTextBox( "PS_Detail_Deal_deal_txtbxID", account, "Deal Name" );
 		SearchGridHelper.gridFilterSearchWithTextBox( "PS_Detail_Deal_contractNo_txtbxID", contractNo, "Contract No" );
 		if(!dealPeriod.isEmpty())			
@@ -224,7 +224,7 @@ public class Deal extends PSAcceptanceTest
 			dealMap = excelHolderObj.dataMap(paramVal);
 
 			initializeInstanceVariables();
-			//ButtonHelper.click( "ClearButton" );
+			ButtonHelper.click( "ClearButton" );
 			GenericHelper.waitForLoadmask( searchScreenWaitSec );	
 			if (isDealPresent()) {				
 				int row  = GridHelper.getRowNumber( "SearchGrid", account, "Account" );
@@ -251,12 +251,12 @@ public class Deal extends PSAcceptanceTest
 		for (paramVal = 0; paramVal < colSize; paramVal++) {
 			dealMap = excelHolderObj.dataMap(paramVal);
 			dealPeriod = ExcelHolder.getKey( dealMap, "DealPeriod" );
-			//partition = ExcelHolder.getKey(dealMap, "Partition");
+//			partition = ExcelHolder.getKey(dealMap, "Partition");
 			account = ExcelHolder.getKey( dealMap, "Account" );			
 			contractNo = ExcelHolder.getKey( dealMap, "Contract No" );			
 			if (isDealPresent()) {
 				GridHelper.clickRow( "SearchGrid", account, "Account" );
-				//assertEquals( GridHelper.getCellValue( "SearchGrid", 1, " Status" ), "Draft" );
+				assertEquals( GridHelper.getCellValue( "SearchGrid", 1, " Status" ), "Draft" );
 				PSGenericHelper.waitForParentActionElementTOBeclickable( "Change Status" );
 				NavigationHelper.navigateToAction( "Change Status", "Validate" );
 				GenericHelper.waitForLoadmask( searchScreenWaitSec );
@@ -571,17 +571,22 @@ public class Deal extends PSAcceptanceTest
 	public void dealUnDelete() throws Exception {
 
 		NavigationHelper.navigateToScreen("Deal");
-		for (paramVal = 0; paramVal < colSize; paramVal++) {
+		for (paramVal = 0; paramVal < colSize; paramVal++)
+        {
 			dealMap = excelHolderObj.dataMap(paramVal);
-
 			partition = ExcelHolder.getKey(dealMap, "Partition");
 			account = ExcelHolder.getKey( dealMap, "Account" );
 			contractNo = ExcelHolder.getKey( dealMap, "Contract No" );
 			dealPeriod = ExcelHolder.getKey( dealMap, "DealPeriod" );
-			genHelperObj.selectPartitionFilter(partition, "Deleted Items");		
 
-			if (isDealPresent()) {
+            isDealPresent();
+            genHelperObj.selectPartitionFilter(partition, "Deleted Items");
+            GenericHelper.waitForLoadmask();
+
+			if (GridHelper.isValuePresent("SearchGrid", account, "Account")) {
 				genHelperObj.clickDeleteOrUnDeleteAction(account, "Account", "Undelete");
+                GenericHelper.waitForLoadmask();
+                GenericHelper.waitForLoadmask();
 				genHelperObj.selectPartitionFilter(partition, "Non Deleted Items");
 				assertTrue(GridHelper.isValuePresent("SearchGrid", account, "Account"), account);
 				Log4jHelper.logInfo("Deal is un deleted successfully :" + account);

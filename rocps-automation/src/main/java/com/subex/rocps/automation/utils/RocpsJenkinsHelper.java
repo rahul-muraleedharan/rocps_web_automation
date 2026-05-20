@@ -79,6 +79,9 @@ public class RocpsJenkinsHelper extends PSAcceptanceTest {
 	private File downloadTo( String url, String fileName ) throws Exception {
 		try {
 			String configuredPath = configuredDownloadPath();
+			while ( configuredPath.endsWith( "/" ) ) {
+				configuredPath = configuredPath.substring( 0, configuredPath.length() - 1 );
+			}
 			String buildNo = configProp.getStringProperty( "local_buildno" );
 			String targetDir = ValidationHelper.isNotEmpty( buildNo ) ? configuredPath + "/" + buildNo : configuredPath;
 			boolean remote = ValidationHelper.isNotEmpty( configProp.getRemoteHostname() );

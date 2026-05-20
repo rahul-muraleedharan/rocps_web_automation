@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.subex.automation.helpers.component.FileHelper;
 import com.subex.automation.helpers.component.GenericHelper;
 import com.subex.automation.helpers.data.ValidationHelper;
 import com.subex.automation.helpers.report.Log4jHelper;
@@ -73,13 +72,17 @@ public class ExcelReaderHelper extends AcceptanceTest {
 	protected void excelIntialize() throws Exception {
 		try {
 			if (!path.endsWith(".xlsx")) {
-				if (FileHelper.checkFileExists(path + ".xlsx"))
+				// Excel workbooks are bundled automation resources read by POI
+				// from the local filesystem; check locally, not on the remote
+				// app host (FileHelper.checkFileExists routes "/" paths over
+				// SFTP once a remote session is open).
+				if (new File(path + ".xlsx").exists())
 					path = path + ".xlsx";
 				else
 					FailureHelper.failTest("File '" + new File(path).getName() + "' does not exists.");
 			}
 			else {
-				if (!FileHelper.checkFileExists(path))
+				if (!new File(path).exists())
 					FailureHelper.failTest("File '" + new File(path).getName() + "' does not exists.");
 			}
 			
@@ -104,7 +107,7 @@ public class ExcelReaderHelper extends AcceptanceTest {
 				if (!path.endsWith(".xlsx"))
 					path = path + ".xlsx";
 				
-				if (!FileHelper.checkFileExists(path))
+				if (!new File(path).exists())
 					FailureHelper.failTest("File '" + new File(path).getName() + "' does not exists.");
 				
 				File excelFile = new File( path );

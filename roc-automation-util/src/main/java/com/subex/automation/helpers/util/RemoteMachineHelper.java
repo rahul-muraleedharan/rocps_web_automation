@@ -861,6 +861,81 @@ public class RemoteMachineHelper extends AcceptanceTest {
 		}
 	}
 	
+	/*
+	 * Recursively uploads a directory tree from the local (automation) machine
+	 * to the remote machine over SFTP. Unlike copyDirectory()/folderUpload(),
+	 * which run a remote-side "cp -r" and therefore require the source to
+	 * already exist on the remote box, this reads files from the local
+	 * filesystem and pushes them, creating remote directories as needed.
+	 * Use this when the automation host differs from the application host.
+	 */
+	public void uploadDirectory(String localSrcPath, String remoteDestPath) throws Exception {
+		try {
+			createSFTPConnection();
+
+			// Use the local source path as-is: it lives on the automation host
+			// (Java's File accepts both separators on Windows). Do NOT route it
+			// through GenericHelper.getPath() — that normalizes for the remote
+			// OS, escapes spaces, and (via makeDirectory) would create junk
+			// dirs locally.
+			File localSrc = new File(localSrcPath);
+			if (!localSrc.exists())
+				FailureHelper.failTest("Local source directory '" + localSrcPath + "' does not exist.");
+
+			// Remote path is always POSIX for SFTP: forward slashes, no trailing slash.
+			String remoteRoot = remoteDestPath.replace('\\', '/');
+			while (remoteRoot.length() > 1 && remoteRoot.endsWith("/"))
+				remoteRoot = remoteRoot.substring(0, remoteRoot.length() - 1);
+
+			uploadDirectory(sftpChannel, localSrc, remoteRoot);
+			Log4jHelper.logInfo("Uploaded '" + localSrcPath + "' to remote '" + remoteDestPath + "'");
+		} catch (Exception e) {
+			FailureHelper.setErrorMessage(e);
+			throw e;
+		}
+	}
+
+	private void uploadDirectory(ChannelSftp channel, File localDir, String remoteDir) throws Exception {
+		if (!channel.isConnected())
+			channel.connect();
+
+		makeRemoteDir(channel, remoteDir);
+
+		File[] children = localDir.listFiles();
+		if (children == null)
+			return;
+
+		for (File child : children) {
+			String remoteChild = remoteDir + "/" + child.getName();
+			if (child.isDirectory()) {
+				uploadDirectory(channel, child, remoteChild);
+			}
+			else {
+				FileInputStream fis = null;
+				try {
+					fis = new FileInputStream(child);
+					channel.put(fis, remoteChild, ChannelSftp.OVERWRITE);
+				} finally {
+					if (fis != null)
+						fis.close();
+				}
+			}
+		}
+	}
+
+	private void makeRemoteDir(ChannelSftp channel, String remoteDir) throws Exception {
+		try {
+			channel.stat(remoteDir);
+		} catch (SftpException notFound) {
+			try {
+				channel.mkdir(remoteDir);
+			} catch (SftpException e) {
+				// Tolerate races / pre-existing dir; surface anything else.
+				channel.stat(remoteDir);
+			}
+		}
+	}
+
 	public void moveDirectory(String srcFileNameWithPath, String destPath, boolean failTestCase) throws Exception {
 		try {
 			createSFTPConnection();

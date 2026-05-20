@@ -28,6 +28,7 @@ import com.subex.automation.helpers.report.Log4jHelper;
 import com.subex.automation.helpers.selenium.ROCAcceptanceTest;
 import com.subex.automation.helpers.util.CommandLineScriptHelper;
 import com.subex.automation.helpers.util.FailureHelper;
+import com.subex.automation.helpers.util.JavaVersionHelper;
 import com.subex.automation.helpers.util.RemoteMachineHelper;
 import com.subex.rocps.automation.helpers.selenium.PSAcceptanceTest;
 
@@ -42,8 +43,7 @@ public class PSControllerHelper extends PSAcceptanceTest
 	static RunTomcat runTomcat;
 	static TaskSearchHelper taskSearch = null;
 
-	private boolean updateJava = false;
-	private String exportJava = "export JAVA_HOME=JAVAPATH && export PATH=$JAVA_HOME/bin:$PATH";
+	private String tomcatEnvPrefix = "";
 
 	public PSControllerHelper() throws Exception
 	{
@@ -53,18 +53,32 @@ public class PSControllerHelper extends PSAcceptanceTest
 			isSCRunning = checkIfSCRunning();
 			taskSearch = new TaskSearchHelper();
 
-			String java8Path = configProp.getStringProperty( "java8Path", "" );
-			if ( ValidationHelper.isNotEmpty( java8Path ) )
-			{
-				updateJava = true;
-				exportJava = exportJava.replace( "JAVAPATH", java8Path );
-			}
+			tomcatEnvPrefix = buildTomcatEnvPrefix();
 		}
 		catch ( Exception e )
 		{
 			FailureHelper.setErrorMessage( e );
 			throw e;
 		}
+	}
+
+	/**
+	 * Builds the remote shell prefix prepended to Tomcat startup: switches the
+	 * system 'java' alternative to psconfig 'javaVersion' (via update-alternatives)
+	 * when configured, otherwise falls back to the legacy 'java8Path' direct
+	 * export. Returns an empty string if neither is configured.
+	 */
+	private String buildTomcatEnvPrefix() throws Exception
+	{
+		String javaVersion = configProp.getStringProperty( "javaVersion", "" );
+		if ( ValidationHelper.isNotEmpty( javaVersion ) )
+			return JavaVersionHelper.selectRemoteJavaCommand( javaVersion, configProp.getRemotePassword() );
+
+		String java8Path = configProp.getStringProperty( "java8Path", "" );
+		if ( ValidationHelper.isNotEmpty( java8Path ) )
+			return "export JAVA_HOME=" + java8Path + " && export PATH=$JAVA_HOME/bin:$PATH";
+
+		return "";
 	}
 
 	public boolean isSCRunning()
@@ -168,9 +182,9 @@ public class PSControllerHelper extends PSAcceptanceTest
 			else
 			{
 				String command = "cd " + configProp.getTomcatPath() + "/bin && chmod 777 *.sh && " + "./startup.sh";
-				if ( updateJava )
+				if ( ValidationHelper.isNotEmpty( tomcatEnvPrefix ) )
 				{
-					command = exportJava + " && " + command;
+					command = tomcatEnvPrefix + " && " + command;
 				}
 
 				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();

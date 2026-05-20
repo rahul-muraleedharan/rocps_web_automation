@@ -5,6 +5,7 @@ import com.subex.automation.helpers.data.ValidationHelper;
 import com.subex.automation.helpers.report.Log4jHelper;
 import com.subex.automation.helpers.selenium.AcceptanceTest;
 import com.subex.automation.helpers.util.FailureHelper;
+import com.subex.automation.helpers.util.JavaVersionHelper;
 import com.subex.automation.helpers.util.RemoteMachineHelper;
 
 public class PSRunStreamController implements Runnable
@@ -12,24 +13,19 @@ public class PSRunStreamController implements Runnable
 
 	private PropertyReader propConfig;
 	private String deployPath;
+	private String scPort;
+	private String scExeFilename;
 
-	private boolean updateJava = false;
-	private String exportJava = "export JAVA_HOME=JAVAPATH && export PATH=$JAVA_HOME/bin:$PATH";
-	private String exportSparkTemp = "export SPARK_TEMP=SPARKTEMPPATH";
+	private String remoteEnvPrefix = "";
 
 	public PSRunStreamController( PropertyReader propConfig ) throws Exception
 	{
 		this.propConfig = propConfig;
 		this.deployPath = AcceptanceTest.deployPath;
+		this.scPort = propConfig.getStringProperty( "scPort", "7800" );
+		this.scExeFilename = propConfig.getStringProperty( "streamControllerExeFile", "sc.sh" );
 
-		String java11Path = propConfig.getStringProperty( "java11Path", "" );
-		String sparkTempPath = propConfig.getStringProperty( "sparkTempPath", "" );
-		if ( ValidationHelper.isNotEmpty( java11Path ) )
-		{
-			this.updateJava = true;
-			this.exportJava = exportJava.replace( "JAVAPATH", java11Path );
-			this.exportSparkTemp = exportSparkTemp.replace( "SPARKTEMPPATH", sparkTempPath );
-		}
+		this.remoteEnvPrefix = buildRemoteEnvPrefix( propConfig );
 	}
 
 	public void run()
@@ -46,13 +42,10 @@ public class PSRunStreamController implements Runnable
 			}
 			else
 			{
-				String command = "cd " + deployPath + "/bin && chmod 777 sc.sh && ./sc.sh -PORT=7800";
+				String command = "cd " + deployPath + "/bin && chmod 777 " + scExeFilename + " && ./" + scExeFilename + " -PORT=" + scPort;
 
-				if ( updateJava )
-				{
-
-					command = exportSparkTemp + " && " + exportJava + " && " + command;
-				}
+				if ( ValidationHelper.isNotEmpty( remoteEnvPrefix ) )
+					command = remoteEnvPrefix + " && " + command;
 
 				RemoteMachineHelper remoteMachine = new RemoteMachineHelper();
 				remoteMachine.executeScripts( command, "Stream controller started" );
@@ -70,6 +63,41 @@ public class PSRunStreamController implements Runnable
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Builds the remote shell prefix prepended to sc.sh: switches the system
+	 * 'java' alternative to psconfig 'javaVersion' (via update-alternatives) and
+	 * exports SPARK_TEMP. Honors the legacy 'java11Path' as a direct-path
+	 * backstop when 'javaVersion' is not configured. Returns an empty string if
+	 * neither is configured, leaving the existing default Java in place.
+	 */
+	private static String buildRemoteEnvPrefix( PropertyReader propConfig ) throws Exception
+	{
+		String javaVersion = propConfig.getStringProperty( "javaVersion", "" );
+		String sparkTempPath = propConfig.getStringProperty( "sparkTempPath", "" );
+		String java11Path = propConfig.getStringProperty( "java11Path", "" );
+
+		StringBuilder prefix = new StringBuilder();
+
+		if ( ValidationHelper.isNotEmpty( javaVersion ) )
+		{
+			prefix.append( JavaVersionHelper.selectRemoteJavaCommand( javaVersion, propConfig.getRemotePassword() ) );
+		}
+		else if ( ValidationHelper.isNotEmpty( java11Path ) )
+		{
+			prefix.append( "export JAVA_HOME=" ).append( java11Path ).append( " && export PATH=$JAVA_HOME/bin:$PATH" );
+		}
+
+		String sparkTempExport = JavaVersionHelper.exportSparkTempCommand( sparkTempPath );
+		if ( ValidationHelper.isNotEmpty( sparkTempExport ) )
+		{
+			if ( prefix.length() > 0 )
+				prefix.append( " && " );
+			prefix.append( sparkTempExport );
+		}
+
+		return prefix.toString();
 	}
 
 }

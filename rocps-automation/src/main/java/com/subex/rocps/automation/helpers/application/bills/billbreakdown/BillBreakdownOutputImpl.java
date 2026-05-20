@@ -264,7 +264,7 @@ public class BillBreakdownOutputImpl extends PSAcceptanceTest
 	{
 		TestDataHelper testData = new TestDataHelper();
 		String[] values = testData.getStringValue( birtDesignerFile, ";" );
-		String birtSrcPath = automationPath + "\\src\\main\\resources\\Birt\\";
+		String birtSrcPath = automationPath + "/src/main/resources/Birt/";
 		String filePathName = birtSrcPath + values[2];
 		String fileUploadXpath = "//*[@id='billBrkdwnFileUploadDetail.window']//button[@id='FileUpload-upload']";
 		String fileTypeImageName = configProp.getProperty( "fileTypeUploadImageName" );

@@ -24,6 +24,7 @@ import com.subex.automation.helpers.scripts.ExecuteScript;
 import com.subex.automation.helpers.selenium.ROCAcceptanceTest;
 import com.subex.automation.helpers.util.DownloadBinaries;
 import com.subex.automation.helpers.util.FailureHelper;
+import com.subex.automation.helpers.util.JavaVersionHelper;
 import com.subex.automation.helpers.util.RemoteMachineHelper;
 import com.subex.automation.helpers.util.RunInstaller;
 import com.subex.automation.helpers.util.UnzipHelper;
@@ -45,15 +46,25 @@ public class SetupHelper extends ROCAcceptanceTest {
 			ciwFile = configProp.getStringProperty("ciwFile", "spark.ciw");
 			licenseOperator = configProp.getStringProperty("licenseOperator", "Subex Ltd");
 
-			SetupHelper.downloadPath = downloadPath;
+			// Strip trailing slash(es) so every "downloadPath + \"/\" + name"
+			// join below does not produce "//" (breaks remote unzip/curl).
+			SetupHelper.downloadPath = stripTrailingSlash(downloadPath);
 			serverFileName = configProp.getServerFileName();
-			this.tomcatPath = tomcatPath;
+			this.tomcatPath = stripTrailingSlash(tomcatPath);
 			this.clientContextPath = clientContextPath;
 			warFileName = clientContextPath + ".war";
 		} catch (Exception e) {
 			FailureHelper.setErrorMessage(e);
 			throw e;
 		}
+	}
+
+	private static String stripTrailingSlash(String path) {
+		if (path == null)
+			return null;
+		while (path.endsWith("/") || path.endsWith("\\"))
+			path = path.substring(0, path.length() - 1);
+		return path;
 	}
 
 	private String getLicenseKey() throws Exception {
@@ -336,35 +347,47 @@ public class SetupHelper extends ROCAcceptanceTest {
 			UnzipHelper unZip = new UnzipHelper();
 			unZip.unzip(applicationOS, downloadedServerFile, downloadPath);
 			deployPath = configProp.getDeployPath();
-			FileHelper.cleanUpDir(applicationOS, deployPath, "No");
-			
-			if (ValidationHelper.isTrue(configProp.getCopyCompleteDeploy())) {
+
+			// ROCPS server distribution zips extract a versioned folder that
+			// is itself the configured deployPath, so the unzip above already
+			// produced the final layout. The legacy clean + copy of a
+			// top-level "deploy/" folder only applies to ROC zips; running it
+			// here would wipe the freshly extracted distribution and then fail
+			// on a non-existent "deploy/" source. Skip it when deployPath is
+			// already populated.
+			boolean alreadyExtracted = FileHelper.checkDirectoryExists(applicationOS, GenericHelper.getPath(deployPath));
+
+			if (!alreadyExtracted) {
 				FileHelper.cleanUpDir(applicationOS, deployPath, "No");
-				
-				String[] deploy = deployPath.split(delimiter);
-				String deployFolderName = deploy[deploy.length-1];
-				int size = deployPath.length() - deployFolderName.length();
-				if (deployPath.endsWith("/"))
-					size--;
-				String deployFolderPath = deployPath.substring(0, size);
-				
-				FileHelper.copyFile(downloadPath, deployFolderPath, "deploy", "", true);
-			}
-			else {
-				String[] filesToCopy = configProp.getDeployFilesToCopy().split(",");
-				String downloadedDeploy = rocHelper.getDeployPath(downloadedServerFile);
-				
-				for (int i = 0; i < filesToCopy.length; i++) {
-					String[] file = filesToCopy[i].split(delimiter);
-					String fileName = file[file.length-1];
-					int size = filesToCopy[i].length() - fileName.length();
-					
-					if (size > 0) {
-						String path = filesToCopy[i].substring(0, size);
-						FileHelper.copyFile(downloadedDeploy + path, deployPath + path, filesToCopy[i], filesToCopy[i], true);
+
+				if (ValidationHelper.isTrue(configProp.getCopyCompleteDeploy())) {
+					FileHelper.cleanUpDir(applicationOS, deployPath, "No");
+
+					String[] deploy = deployPath.split(delimiter);
+					String deployFolderName = deploy[deploy.length-1];
+					int size = deployPath.length() - deployFolderName.length();
+					if (deployPath.endsWith("/"))
+						size--;
+					String deployFolderPath = deployPath.substring(0, size);
+
+					FileHelper.copyFile(downloadPath, deployFolderPath, "deploy", "", true);
+				}
+				else {
+					String[] filesToCopy = configProp.getDeployFilesToCopy().split(",");
+					String downloadedDeploy = rocHelper.getDeployPath(downloadedServerFile);
+
+					for (int i = 0; i < filesToCopy.length; i++) {
+						String[] file = filesToCopy[i].split(delimiter);
+						String fileName = file[file.length-1];
+						int size = filesToCopy[i].length() - fileName.length();
+
+						if (size > 0) {
+							String path = filesToCopy[i].substring(0, size);
+							FileHelper.copyFile(downloadedDeploy + path, deployPath + path, filesToCopy[i], filesToCopy[i], true);
+						}
+						else
+							FileHelper.copyFile(downloadedDeploy, deployPath, filesToCopy[i], filesToCopy[i], true);
 					}
-					else
-						FileHelper.copyFile(downloadedDeploy, deployPath, filesToCopy[i], filesToCopy[i], true);
 				}
 			}
 			
@@ -586,25 +609,12 @@ public class SetupHelper extends ROCAcceptanceTest {
 
 	/**
 	 * Remote shell snippet that switches the system 'java' alternative to the
-	 * given major version ("8", "11", ...). The remote box may use Debian
-	 * update-alternatives or Red Hat alternatives; both accept `--display java`
-	 * and `--set java <path>` (Red Hat rejects `--list java`). Path naming of
-	 * JDKs varies, so the candidate paths are pulled from the `... - priority N`
-	 * lines and each is matched on the version it actually reports
-	 * (`java -version`: "11.0.20" -> 11, legacy "1.8.0_x" -> 8).
+	 * given major version. Delegates to {@link JavaVersionHelper} so the same
+	 * shell is shared by the pre-installer, silent installer, and the
+	 * Stream/Task Controller / Tomcat startup paths.
 	 */
 	private String selectRemoteJava(String javaVersion) throws Exception {
-		return
-			"ALT=$(command -v update-alternatives 2>/dev/null || command -v alternatives 2>/dev/null); "
-			+ "if [ -z \"$ALT\" ]; then echo 'No update-alternatives/alternatives on remote server' >&2; exit 1; fi; "
-			+ "JAVA_BIN=''; "
-			+ "for J in $(\"$ALT\" --display java 2>/dev/null | awk '/^\\/.*priority/{print $1}'); do "
-			+ "V=$(\"$J\" -version 2>&1 | awk -F'\"' '/ version /{print $2; exit}'); "
-			+ "M=$(echo \"$V\" | awk -F. '{if ($1==1) print $2; else print $1}'); "
-			+ "if [ \"$M\" = \"" + javaVersion + "\" ]; then JAVA_BIN=\"$J\"; break; fi; "
-			+ "done; "
-			+ "if [ -z \"$JAVA_BIN\" ]; then echo \"No Java " + javaVersion + " among: $(\"$ALT\" --display java 2>&1 | tr '\\n' ' ')\" >&2; exit 1; fi; "
-			+ "echo '" + shellSingleQuote(configProp.getRemotePassword()) + "' | sudo -S \"$ALT\" --set java \"$JAVA_BIN\"";
+		return JavaVersionHelper.selectRemoteJavaCommand(javaVersion, configProp.getRemotePassword());
 	}
 
 	/**
