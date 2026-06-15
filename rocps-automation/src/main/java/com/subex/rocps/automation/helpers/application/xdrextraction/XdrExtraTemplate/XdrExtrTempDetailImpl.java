@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 import com.subex.automation.helpers.component.ButtonHelper;
@@ -321,6 +322,35 @@ public class XdrExtrTempDetailImpl extends PSAcceptanceTest
 
 	}
 
+	// Re-locates and retries a grid row click. The GWT grids on this screen recycle their row
+	// DOM nodes as they re-render asynchronously after a selection/scroll. GridHelper.clickRow ->
+	// clickCell locates the cell, then calls ElementHelper.isClickable() which swallows the
+	// staleness (StaleElementReferenceException is a WebDriverException) and returns false, so the
+	// subsequent scrollIntoView runs on a now-detached node and throws. Each clickRow re-resolves
+	// the element, so a retry effectively re-locates it -- but only if the grid is given time to
+	// finish re-rendering first. waitForLoadmask returns immediately when no mask is shown, so it
+	// is a no-op here and bursts the retries within the same instant; use a real settle sleep
+	// (the same approach that makes the entities grid below reliable) between attempts.
+	private void clickGridRowWithRetry( String gridId, String cellValue, String columnHeader ) throws Exception
+	{
+		int attempts = 0;
+		while ( true )
+		{
+			try
+			{
+				GridHelper.clickRow( gridId, cellValue, columnHeader );
+				return;
+			}
+			catch ( StaleElementReferenceException e )
+			{
+				if ( ++attempts > 6 )
+					throw e;
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
+				GenericHelper.waitTime( 2, "Grid row '" + cellValue + "' went stale; letting the grid settle before re-locating it (attempt " + attempts + ")" );
+			}
+		}
+	}
+
 	// Method: Edit Table Columns:
 	private void editTableColmns( int index ) throws Exception
 	{
@@ -344,8 +374,8 @@ public class XdrExtrTempDetailImpl extends PSAcceptanceTest
 					psGenericHelper.scrollforHeaderElement( "PS_Detail_xdrExtTemp_tableColm_GridID", "Display  Name" );
 					GenericHelper.waitForLoadmask( searchScreenWaitSec );
 					GenericHelper.waitForLoadmask( searchScreenWaitSec );
-					GridHelper.clickRow( "PS_Detail_xdrExtTemp_tableColm_GridID", displayNm, "Display Name" );
-					GridHelper.clickRow( "PS_Detail_xdrExtTemp_tableColm_GridID", displayNm, "Display Name" );
+					clickGridRowWithRetry( "PS_Detail_xdrExtTemp_tableColm_GridID", displayNm, "Display Name" );
+					clickGridRowWithRetry( "PS_Detail_xdrExtTemp_tableColm_GridID", displayNm, "Display Name" );
 					int row = GridHelper.getRowNumber( "PS_Detail_xdrExtTemp_tableColm_GridID", displayNm, "Display Name" );
 					if ( ValidationHelper.isTrue( displayNmFlg ) && getCheckBoxText( displayNmGridId, displayNm ).contains( "cellunchecked" ) )
 					{
@@ -374,8 +404,8 @@ public class XdrExtrTempDetailImpl extends PSAcceptanceTest
 				tcl_displayNmKeyArr = psStringUtils.stringSplitFirstLevel( entitiesColmnsArr[index] );
 				for ( int i = 0; i < tcl_displayNmKeyArr.length; i++ )
 				{
-					GridHelper.clickRow( "PS_Detail_xdrExtTemp_tableColm_GridID", tcl_displayNmKeyArr[i], "Display Name" );
-					GridHelper.clickRow( "PS_Detail_xdrExtTemp_tableColm_GridID", tcl_displayNmKeyArr[i], "Display Name" );
+					clickGridRowWithRetry( "PS_Detail_xdrExtTemp_tableColm_GridID", tcl_displayNmKeyArr[i], "Display Name" );
+					clickGridRowWithRetry( "PS_Detail_xdrExtTemp_tableColm_GridID", tcl_displayNmKeyArr[i], "Display Name" );
 					editEntitiesField( ent_entityNmArr[i] );
 
 				}
@@ -403,7 +433,14 @@ public class XdrExtrTempDetailImpl extends PSAcceptanceTest
 				entityNmWithFlgArr = psStringUtils.stringSplitThirdLevel( entityNmArr[i] );
 				String entityNm = entityNmWithFlgArr[0];
 				String entityNmFlg = entityNmWithFlgArr[1];
-				GridHelper.clickRow( "PS_Detail_xdrExtTemp_entities_GridID", entityNm, "Entity Name" );
+				// The entities grid loads asynchronously after the table column is selected and
+				// shows no loadmask, so a plain wait is not enough; poll until the target entity
+				// row is actually rendered before clicking it.
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
+				for ( int waitCount = 0; waitCount < searchScreenWaitSec
+						&& !GridHelper.isValuePresent( "PS_Detail_xdrExtTemp_entities_GridID", entityNm, "Entity Name" ); waitCount++ )
+					GenericHelper.waitTime( 1, "Waiting for entity '" + entityNm + "' to load in the entities grid" );
+				clickGridRowWithRetry( "PS_Detail_xdrExtTemp_entities_GridID", entityNm, "Entity Name" );
 				int row = GridHelper.getRowNumber( "PS_Detail_xdrExtTemp_entities_GridID", entityNm, "Entity Name" );
 				if ( ValidationHelper.isTrue( entityNmFlg ) && getCheckBoxText( entityNmGridId, entityNm ).contains( "cellunchecked" ) )
 				{
