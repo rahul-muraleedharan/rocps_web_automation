@@ -174,6 +174,8 @@ package com.subex.rocps.automation.helpers.application.bills.billbreakdown;
 
 import java.util.Map;
 
+import org.openqa.selenium.StaleElementReferenceException;
+
 import com.subex.automation.helpers.component.ButtonHelper;
 import com.subex.automation.helpers.component.ComboBoxHelper;
 import com.subex.automation.helpers.component.ElementHelper;
@@ -269,21 +271,42 @@ public class BillBreakdownOutputImpl extends PSAcceptanceTest
 		String fileUploadXpath = "//*[@id='billBrkdwnFileUploadDetail.window']//button[@id='FileUpload-upload']";
 		String fileTypeImageName = configProp.getProperty( "fileTypeUploadImageName" );
 		String openButtonImageName = configProp.getProperty( "openButtoneUploadImageName" );
-		ButtonHelper.click( "trigger-pbboFilePath" );
+		clickWithStaleRetry( "trigger-pbboFilePath" );
 		String uploadBirtDesignFilPopupXpath = "//*[@id='billBrkdwnFileUploadDetail.window']//div[text()='Birt  Designer  File']";
 		if ( !ElementHelper.isElementPresent( uploadBirtDesignFilPopupXpath ) )
-			ButtonHelper.click( "trigger-pbboFilePath" );
+			clickWithStaleRetry( "trigger-pbboFilePath" );
 		GenericHelper.waitForAJAXReady( detailScreenWaitSec );
 		ComboBoxHelper.select( "billBrkdwnFileUploadDetail.window", "DataDir_Token_Dropdown", values[0] );
 		TextBoxHelper.type( "billBrkdwnFileUploadDetail.window", "pbboRelativePath", values[1] );
 
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		FileHelper.fileUploadRobot( "//div[@class='roc-trigger roc-fileupload-trigger']", filePathName );
-		ButtonHelper.click( fileUploadXpath );
+		clickWithStaleRetry( fileUploadXpath );
 		if ( ElementHelper.isElementPresent( fileUploadXpath ) )
-			ButtonHelper.click( fileUploadXpath );
+			clickWithStaleRetry( fileUploadXpath );
 		GenericHelper.waitForLoadmask( searchScreenWaitSec );
 		ElementHelper.waitForElementToDisappear( fileUploadXpath, searchScreenWaitSec );
+	}
+
+	private void clickWithStaleRetry( String elementKeyOrXpath ) throws Exception
+	{
+		StaleElementReferenceException lastStaleEx = null;
+		for ( int attempt = 0; attempt < 3; attempt++ )
+		{
+			try
+			{
+				GenericHelper.waitForAJAXReady( detailScreenWaitSec );
+				ButtonHelper.click( elementKeyOrXpath );
+				return;
+			}
+			catch ( StaleElementReferenceException e )
+			{
+				lastStaleEx = e;
+				GenericHelper.waitForLoadmask( searchScreenWaitSec );
+			}
+		}
+
+		throw lastStaleEx;
 	}
 
 	/*
